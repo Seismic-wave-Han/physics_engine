@@ -18,11 +18,15 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
     main.cpp \
     mainwindow.cpp \
-    object.cpp
+    object.cpp \
+    world.cpp
 
 HEADERS += \
+    collision.h \
+    engine.h \
     mainwindow.h \
-    object.h
+    object.h \
+    world.h
 
 FORMS += \
     mainwindow.ui

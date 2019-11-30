@@ -54,10 +54,12 @@ OBJECTS_DIR   = ./
 
 SOURCES       = ../Physics_engine/main.cpp \
 		../Physics_engine/mainwindow.cpp \
-		../Physics_engine/object.cpp moc_mainwindow.cpp
+		../Physics_engine/object.cpp \
+		../Physics_engine/world.cpp moc_mainwindow.cpp
 OBJECTS       = main.o \
 		mainwindow.o \
 		object.o \
+		world.o \
 		moc_mainwindow.o
 DIST          = /Users/Sangwoo/Qt/5.12.5/clang_64/mkspecs/features/spec_pre.prf \
 		/Users/Sangwoo/Qt/5.12.5/clang_64/mkspecs/qdevice.pri \
@@ -224,6 +226,7 @@ DIST          = /Users/Sangwoo/Qt/5.12.5/clang_64/mkspecs/features/spec_pre.prf 
 		/Users/Sangwoo/Qt/5.12.5/clang_64/mkspecs/features/qt_config.prf \
 		/Users/Sangwoo/Qt/5.12.5/clang_64/mkspecs/macx-clang/qmake.conf \
 		/Users/Sangwoo/Qt/5.12.5/clang_64/mkspecs/features/spec_post.prf \
+		../Physics_engine/.qmake.stash \
 		/Users/Sangwoo/Qt/5.12.5/clang_64/mkspecs/features/exclusive_builds.prf \
 		/Users/Sangwoo/Qt/5.12.5/clang_64/mkspecs/features/mac/sdk.prf \
 		/Users/Sangwoo/Qt/5.12.5/clang_64/mkspecs/features/toolchain.prf \
@@ -251,10 +254,14 @@ DIST          = /Users/Sangwoo/Qt/5.12.5/clang_64/mkspecs/features/spec_pre.prf 
 		/Users/Sangwoo/Qt/5.12.5/clang_64/mkspecs/features/exceptions.prf \
 		/Users/Sangwoo/Qt/5.12.5/clang_64/mkspecs/features/yacc.prf \
 		/Users/Sangwoo/Qt/5.12.5/clang_64/mkspecs/features/lex.prf \
-		../Physics_engine/Physics_engine.pro ../Physics_engine/mainwindow.h \
-		../Physics_engine/object.h ../Physics_engine/main.cpp \
+		../Physics_engine/Physics_engine.pro ../Physics_engine/collision.h \
+		../Physics_engine/engine.h \
+		../Physics_engine/mainwindow.h \
+		../Physics_engine/object.h \
+		../Physics_engine/world.h ../Physics_engine/main.cpp \
 		../Physics_engine/mainwindow.cpp \
-		../Physics_engine/object.cpp
+		../Physics_engine/object.cpp \
+		../Physics_engine/world.cpp
 QMAKE_TARGET  = Physics_engine
 DESTDIR       = 
 TARGET        = Physics_engine.app/Contents/MacOS/Physics_engine
@@ -442,6 +449,7 @@ Makefile: ../Physics_engine/Physics_engine.pro /Users/Sangwoo/Qt/5.12.5/clang_64
 		/Users/Sangwoo/Qt/5.12.5/clang_64/mkspecs/features/qt_config.prf \
 		/Users/Sangwoo/Qt/5.12.5/clang_64/mkspecs/macx-clang/qmake.conf \
 		/Users/Sangwoo/Qt/5.12.5/clang_64/mkspecs/features/spec_post.prf \
+		.qmake.stash \
 		/Users/Sangwoo/Qt/5.12.5/clang_64/mkspecs/features/exclusive_builds.prf \
 		/Users/Sangwoo/Qt/5.12.5/clang_64/mkspecs/features/mac/sdk.prf \
 		/Users/Sangwoo/Qt/5.12.5/clang_64/mkspecs/features/toolchain.prf \
@@ -639,6 +647,7 @@ Makefile: ../Physics_engine/Physics_engine.pro /Users/Sangwoo/Qt/5.12.5/clang_64
 /Users/Sangwoo/Qt/5.12.5/clang_64/mkspecs/features/qt_config.prf:
 /Users/Sangwoo/Qt/5.12.5/clang_64/mkspecs/macx-clang/qmake.conf:
 /Users/Sangwoo/Qt/5.12.5/clang_64/mkspecs/features/spec_post.prf:
+.qmake.stash:
 /Users/Sangwoo/Qt/5.12.5/clang_64/mkspecs/features/exclusive_builds.prf:
 /Users/Sangwoo/Qt/5.12.5/clang_64/mkspecs/features/mac/sdk.prf:
 /Users/Sangwoo/Qt/5.12.5/clang_64/mkspecs/features/toolchain.prf:
@@ -700,8 +709,8 @@ distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
 	$(COPY_FILE) --parents /Users/Sangwoo/Qt/5.12.5/clang_64/mkspecs/features/data/dummy.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents ../Physics_engine/mainwindow.h ../Physics_engine/object.h $(DISTDIR)/
-	$(COPY_FILE) --parents ../Physics_engine/main.cpp ../Physics_engine/mainwindow.cpp ../Physics_engine/object.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents ../Physics_engine/collision.h ../Physics_engine/engine.h ../Physics_engine/mainwindow.h ../Physics_engine/object.h ../Physics_engine/world.h $(DISTDIR)/
+	$(COPY_FILE) --parents ../Physics_engine/main.cpp ../Physics_engine/mainwindow.cpp ../Physics_engine/object.cpp ../Physics_engine/world.cpp $(DISTDIR)/
 	$(COPY_FILE) --parents ../Physics_engine/mainwindow.ui $(DISTDIR)/
 
 
@@ -712,6 +721,7 @@ clean: compiler_clean
 
 distclean: clean 
 	-$(DEL_FILE) -r Physics_engine.app
+	-$(DEL_FILE) .qmake.stash
 	-$(DEL_FILE) Makefile
 
 
@@ -740,6 +750,7 @@ compiler_moc_header_make_all: moc_mainwindow.cpp
 compiler_moc_header_clean:
 	-$(DEL_FILE) moc_mainwindow.cpp
 moc_mainwindow.cpp: ../Physics_engine/mainwindow.h \
+		../Physics_engine/engine.h \
 		/Users/Sangwoo/Qt/5.12.5/clang_64/lib/QtWidgets.framework/Headers/QMainWindow \
 		/Users/Sangwoo/Qt/5.12.5/clang_64/lib/QtWidgets.framework/Headers/qmainwindow.h \
 		moc_predefs.h \
@@ -770,21 +781,40 @@ compiler_clean: compiler_moc_predefs_clean compiler_moc_header_clean compiler_ui
 ####### Compile
 
 main.o: ../Physics_engine/main.cpp ../Physics_engine/mainwindow.h \
+		../Physics_engine/engine.h \
 		/Users/Sangwoo/Qt/5.12.5/clang_64/lib/QtWidgets.framework/Headers/QMainWindow \
 		/Users/Sangwoo/Qt/5.12.5/clang_64/lib/QtWidgets.framework/Headers/qmainwindow.h \
 		../Physics_engine/object.h \
+		../Physics_engine/collision.h \
 		/Users/Sangwoo/Qt/5.12.5/clang_64/lib/QtWidgets.framework/Headers/QApplication \
 		/Users/Sangwoo/Qt/5.12.5/clang_64/lib/QtWidgets.framework/Headers/qapplication.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o ../Physics_engine/main.cpp
 
 mainwindow.o: ../Physics_engine/mainwindow.cpp ../Physics_engine/mainwindow.h \
+		../Physics_engine/engine.h \
 		/Users/Sangwoo/Qt/5.12.5/clang_64/lib/QtWidgets.framework/Headers/QMainWindow \
 		/Users/Sangwoo/Qt/5.12.5/clang_64/lib/QtWidgets.framework/Headers/qmainwindow.h \
-		ui_mainwindow.h
+		ui_mainwindow.h \
+		../Physics_engine/world.h \
+		/Users/Sangwoo/Qt/5.12.5/clang_64/lib/QtWidgets.framework/Headers/QOpenGLWidget \
+		/Users/Sangwoo/Qt/5.12.5/clang_64/lib/QtWidgets.framework/Headers/qopenglwidget.h \
+		/Users/Sangwoo/Qt/5.12.5/clang_64/lib/QtCore.framework/Headers/QTimer \
+		/Users/Sangwoo/Qt/5.12.5/clang_64/lib/QtCore.framework/Headers/qtimer.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o mainwindow.o ../Physics_engine/mainwindow.cpp
 
-object.o: ../Physics_engine/object.cpp ../Physics_engine/object.h
+object.o: ../Physics_engine/object.cpp ../Physics_engine/object.h \
+		../Physics_engine/engine.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o object.o ../Physics_engine/object.cpp
+
+world.o: ../Physics_engine/world.cpp ../Physics_engine/world.h \
+		/Users/Sangwoo/Qt/5.12.5/clang_64/lib/QtWidgets.framework/Headers/QOpenGLWidget \
+		/Users/Sangwoo/Qt/5.12.5/clang_64/lib/QtWidgets.framework/Headers/qopenglwidget.h \
+		../Physics_engine/engine.h \
+		/Users/Sangwoo/Qt/5.12.5/clang_64/lib/QtCore.framework/Headers/QTimer \
+		/Users/Sangwoo/Qt/5.12.5/clang_64/lib/QtCore.framework/Headers/qtimer.h \
+		/Users/Sangwoo/Qt/5.12.5/clang_64/lib/QtGui.framework/Headers/QMouseEvent \
+		/Users/Sangwoo/Qt/5.12.5/clang_64/lib/QtGui.framework/Headers/qevent.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o world.o ../Physics_engine/world.cpp
 
 moc_mainwindow.o: moc_mainwindow.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_mainwindow.o moc_mainwindow.cpp
