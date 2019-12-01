@@ -12,9 +12,21 @@ Object::Object(QString shape, double mass, double sizeX, double sizeY, double ve
 }
 
 Object::Object(double mass, double velocityX, double velocityY, double restitution, int *elapsed):
-    mass(mass), velocity(QPointF(velocityX,velocityY)), restitution(restitution), elapsed(elapsed)
+    mass(mass), velocity(QPointF(velocityX,velocityY)), restitution(restitution), dt(elapsed)
 {
     qDebug() << "Object is created.";
+}
+
+void Object::update(){
+    positionUpdate();
+}
+
+void Object::positionUpdate(){
+    double g=Get_gravity();
+    position.rx()+=velocity.rx()*delta;
+    position.ry()+=velocity.ry()*delta;
+    velocity.ry()+=g*delta;
+    qDebug() << position.rx()<< ", "<< position.ry();
 }
 
 Rectangle::Rectangle(double mass, double sizeX, double sizeY, double velocityX, double velocityY, double restitution,  int *elapsed):

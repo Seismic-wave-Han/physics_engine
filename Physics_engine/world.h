@@ -25,7 +25,7 @@ private slots:
     void mousePressEvent(QMouseEvent * event);
 public:
     Engine *engine;
-    int elapsed;
+    int dt;
     int positionX;
     int positionY;
     std::vector<Circle> objects;

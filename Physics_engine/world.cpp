@@ -12,14 +12,14 @@
 World::World(Engine *engine, QWidget *parent):
     QOpenGLWidget(parent), engine(engine)
 {
-    elapsed = 0;
+    dt = 0;
     setFixedSize(500,500);
     setAutoFillBackground(false);
 }
 
 void World::animate()
 {
-    elapsed = (elapsed + qobject_cast<QTimer*>(sender())->interval()) % 1000;
+    dt = (dt+qobject_cast<QTimer*>(sender())->interval())%1000;
     update();
 }
 
@@ -33,11 +33,18 @@ void World::paintEvent(QPaintEvent *event){
     painter.setBrush(QBrush(Qt::red));
     painter.setPen(QPen(Qt::blue));
     painter.translate(QPointF(100,100));
-    for (auto circle: objects){
+    for (auto &circle: objects){
         qDebug() << "drawing circles.";
-        qDebug() << circle.position.x();
-        circle.position.setX(elapsed);
-        painter.drawEllipse(QPointF(circle.position.x(),circle.position.y()), circle.radius, circle.radius);
+        qDebug() << circle.position.rx();
+        circle.update();
+//        qDebug() << circle.position.x();
+//        {
+//            double g=circle.Get_gravity();
+//            circle.position.operator+=(circle.velocity);
+//            circle.position.setY(circle.position.y()+circle.velocity.y()*qreal(dt));
+//            circle.velocity.setY(circle.velocity.y()+g*(dt));
+//        }
+        painter.drawEllipse(QPointF(circle.position.rx(), circle.position.ry()), circle.radius, circle.radius);
 
 //        painter.translate(QPointF(100,100));
     }
