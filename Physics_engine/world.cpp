@@ -35,7 +35,11 @@ void World::paintEvent(QPaintEvent *event){
     painter.translate(QPointF(100,100));
     for (auto circle: objects){
         qDebug() << "drawing circles.";
+        qDebug() << circle.position.x();
+        circle.position.setX(elapsed);
         painter.drawEllipse(QPointF(circle.position.x(),circle.position.y()), circle.radius, circle.radius);
+
+//        painter.translate(QPointF(100,100));
     }
     qDebug() << "---cycle---";
 
@@ -57,8 +61,6 @@ void World::mousePressEvent(QMouseEvent *event)
 
 void World::createCircleEvent(Circle circle){
     objects.push_back(circle);
-    QPainter painter;
-    painter.drawEllipse(QPointF(circle.position.x(),circle.position.y()), circle.radius, circle.radius);
 //    paintCircle
 }
 void World::createRectEvent(Rectangle rectangle){
