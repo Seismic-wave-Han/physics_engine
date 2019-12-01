@@ -15,12 +15,12 @@
 #include <QtWidgets/QDoubleSpinBox>
 #include <QtWidgets/QGridLayout>
 #include <QtWidgets/QHBoxLayout>
-#include <QtWidgets/QLCDNumber>
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QMainWindow>
 #include <QtWidgets/QMenuBar>
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QStatusBar>
+#include <QtWidgets/QTextEdit>
 #include <QtWidgets/QVBoxLayout>
 #include <QtWidgets/QWidget>
 
@@ -61,8 +61,8 @@ public:
     QDoubleSpinBox *restitutionValue;
     QWidget *horizontalLayoutWidget;
     QHBoxLayout *horizontalLayout;
-    QLCDNumber *positionX;
-    QLCDNumber *positionY;
+    QTextEdit *positionY;
+    QTextEdit *positionX;
     QMenuBar *menubar;
     QStatusBar *statusbar;
 
@@ -210,19 +210,19 @@ public:
 
         horizontalLayoutWidget = new QWidget(centralwidget);
         horizontalLayoutWidget->setObjectName(QString::fromUtf8("horizontalLayoutWidget"));
-        horizontalLayoutWidget->setGeometry(QRect(660, 460, 160, 80));
+        horizontalLayoutWidget->setGeometry(QRect(660, 460, 221, 80));
         horizontalLayout = new QHBoxLayout(horizontalLayoutWidget);
         horizontalLayout->setObjectName(QString::fromUtf8("horizontalLayout"));
         horizontalLayout->setContentsMargins(0, 0, 0, 0);
-        positionX = new QLCDNumber(horizontalLayoutWidget);
-        positionX->setObjectName(QString::fromUtf8("positionX"));
-
-        horizontalLayout->addWidget(positionX);
-
-        positionY = new QLCDNumber(horizontalLayoutWidget);
+        positionY = new QTextEdit(horizontalLayoutWidget);
         positionY->setObjectName(QString::fromUtf8("positionY"));
 
         horizontalLayout->addWidget(positionY);
+
+        positionX = new QTextEdit(horizontalLayoutWidget);
+        positionX->setObjectName(QString::fromUtf8("positionX"));
+
+        horizontalLayout->addWidget(positionX);
 
         MainWindow->setCentralWidget(centralwidget);
         menubar = new QMenuBar(MainWindow);

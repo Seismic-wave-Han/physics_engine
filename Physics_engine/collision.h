@@ -4,7 +4,7 @@
 #include "object.h"
 
 // simple distance function: position to position
-double Distance(const XY &a, const XY &b = {0 , 0}){
+double Distance(const QPointF &a, const QPointF &b = {0 , 0}){
     return std::sqrt(std::pow((a.x-b.x),2) + std::pow((a.y-b.y),2));
 }
 
@@ -22,10 +22,10 @@ bool Cir_vs_cir(const Circle &cir1, const Circle &cir2){
 }
 
 bool Rec_vs_cir(const Rectangle &rec, const Circle &cir){
-    XY diff(std::abs(cir.position.x - rec.position.x),
+    QPointF diff(std::abs(cir.position.x - rec.position.x),
             std::abs(cir.position.y - rec.position.y));
 
-    XY margin;
+    QPointF margin;
     margin.x = diff.x - 0.5 * rec.width;
     margin.y = diff.y - 0.5 * rec.height;
 

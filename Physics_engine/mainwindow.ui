@@ -191,16 +191,16 @@
      <rect>
       <x>660</x>
       <y>460</y>
-      <width>160</width>
+      <width>221</width>
       <height>80</height>
      </rect>
     </property>
     <layout class="QHBoxLayout" name="horizontalLayout">
      <item>
-      <widget class="QLCDNumber" name="positionX"/>
+      <widget class="QTextEdit" name="positionY"/>
      </item>
      <item>
-      <widget class="QLCDNumber" name="positionY"/>
+      <widget class="QTextEdit" name="positionX"/>
      </item>
     </layout>
    </widget>

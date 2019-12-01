@@ -52,11 +52,13 @@ OBJECTS_DIR   = ./
 
 ####### Files
 
-SOURCES       = ../Physics_engine/main.cpp \
+SOURCES       = ../Physics_engine/engine.cpp \
+		../Physics_engine/main.cpp \
 		../Physics_engine/mainwindow.cpp \
 		../Physics_engine/object.cpp \
 		../Physics_engine/world.cpp moc_mainwindow.cpp
-OBJECTS       = main.o \
+OBJECTS       = engine.o \
+		main.o \
 		mainwindow.o \
 		object.o \
 		world.o \
@@ -258,7 +260,8 @@ DIST          = /Users/Sangwoo/Qt/5.12.5/clang_64/mkspecs/features/spec_pre.prf 
 		../Physics_engine/engine.h \
 		../Physics_engine/mainwindow.h \
 		../Physics_engine/object.h \
-		../Physics_engine/world.h ../Physics_engine/main.cpp \
+		../Physics_engine/world.h ../Physics_engine/engine.cpp \
+		../Physics_engine/main.cpp \
 		../Physics_engine/mainwindow.cpp \
 		../Physics_engine/object.cpp \
 		../Physics_engine/world.cpp
@@ -710,7 +713,7 @@ distdir: FORCE
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
 	$(COPY_FILE) --parents /Users/Sangwoo/Qt/5.12.5/clang_64/mkspecs/features/data/dummy.cpp $(DISTDIR)/
 	$(COPY_FILE) --parents ../Physics_engine/collision.h ../Physics_engine/engine.h ../Physics_engine/mainwindow.h ../Physics_engine/object.h ../Physics_engine/world.h $(DISTDIR)/
-	$(COPY_FILE) --parents ../Physics_engine/main.cpp ../Physics_engine/mainwindow.cpp ../Physics_engine/object.cpp ../Physics_engine/world.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents ../Physics_engine/engine.cpp ../Physics_engine/main.cpp ../Physics_engine/mainwindow.cpp ../Physics_engine/object.cpp ../Physics_engine/world.cpp $(DISTDIR)/
 	$(COPY_FILE) --parents ../Physics_engine/mainwindow.ui $(DISTDIR)/
 
 
@@ -751,6 +754,17 @@ compiler_moc_header_clean:
 	-$(DEL_FILE) moc_mainwindow.cpp
 moc_mainwindow.cpp: ../Physics_engine/mainwindow.h \
 		../Physics_engine/engine.h \
+		/Users/Sangwoo/Qt/5.12.5/clang_64/lib/QtGui.framework/Headers/QBrush \
+		/Users/Sangwoo/Qt/5.12.5/clang_64/lib/QtGui.framework/Headers/qbrush.h \
+		/Users/Sangwoo/Qt/5.12.5/clang_64/lib/QtGui.framework/Headers/QFont \
+		/Users/Sangwoo/Qt/5.12.5/clang_64/lib/QtGui.framework/Headers/qfont.h \
+		/Users/Sangwoo/Qt/5.12.5/clang_64/lib/QtGui.framework/Headers/QPen \
+		/Users/Sangwoo/Qt/5.12.5/clang_64/lib/QtGui.framework/Headers/qpen.h \
+		/Users/Sangwoo/Qt/5.12.5/clang_64/lib/QtWidgets.framework/Headers/QWidget \
+		/Users/Sangwoo/Qt/5.12.5/clang_64/lib/QtWidgets.framework/Headers/qwidget.h \
+		../Physics_engine/world.h \
+		/Users/Sangwoo/Qt/5.12.5/clang_64/lib/QtWidgets.framework/Headers/QOpenGLWidget \
+		/Users/Sangwoo/Qt/5.12.5/clang_64/lib/QtWidgets.framework/Headers/qopenglwidget.h \
 		/Users/Sangwoo/Qt/5.12.5/clang_64/lib/QtWidgets.framework/Headers/QMainWindow \
 		/Users/Sangwoo/Qt/5.12.5/clang_64/lib/QtWidgets.framework/Headers/qmainwindow.h \
 		moc_predefs.h \
@@ -780,40 +794,92 @@ compiler_clean: compiler_moc_predefs_clean compiler_moc_header_clean compiler_ui
 
 ####### Compile
 
+engine.o: ../Physics_engine/engine.cpp ../Physics_engine/engine.h \
+		/Users/Sangwoo/Qt/5.12.5/clang_64/lib/QtGui.framework/Headers/QBrush \
+		/Users/Sangwoo/Qt/5.12.5/clang_64/lib/QtGui.framework/Headers/qbrush.h \
+		/Users/Sangwoo/Qt/5.12.5/clang_64/lib/QtGui.framework/Headers/QFont \
+		/Users/Sangwoo/Qt/5.12.5/clang_64/lib/QtGui.framework/Headers/qfont.h \
+		/Users/Sangwoo/Qt/5.12.5/clang_64/lib/QtGui.framework/Headers/QPen \
+		/Users/Sangwoo/Qt/5.12.5/clang_64/lib/QtGui.framework/Headers/qpen.h \
+		/Users/Sangwoo/Qt/5.12.5/clang_64/lib/QtWidgets.framework/Headers/QWidget \
+		/Users/Sangwoo/Qt/5.12.5/clang_64/lib/QtWidgets.framework/Headers/qwidget.h \
+		/Users/Sangwoo/Qt/5.12.5/clang_64/lib/QtGui.framework/Headers/QPainter \
+		/Users/Sangwoo/Qt/5.12.5/clang_64/lib/QtGui.framework/Headers/qpainter.h \
+		/Users/Sangwoo/Qt/5.12.5/clang_64/lib/QtGui.framework/Headers/QPaintEvent \
+		/Users/Sangwoo/Qt/5.12.5/clang_64/lib/QtGui.framework/Headers/qevent.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o engine.o ../Physics_engine/engine.cpp
+
 main.o: ../Physics_engine/main.cpp ../Physics_engine/mainwindow.h \
 		../Physics_engine/engine.h \
+		/Users/Sangwoo/Qt/5.12.5/clang_64/lib/QtGui.framework/Headers/QBrush \
+		/Users/Sangwoo/Qt/5.12.5/clang_64/lib/QtGui.framework/Headers/qbrush.h \
+		/Users/Sangwoo/Qt/5.12.5/clang_64/lib/QtGui.framework/Headers/QFont \
+		/Users/Sangwoo/Qt/5.12.5/clang_64/lib/QtGui.framework/Headers/qfont.h \
+		/Users/Sangwoo/Qt/5.12.5/clang_64/lib/QtGui.framework/Headers/QPen \
+		/Users/Sangwoo/Qt/5.12.5/clang_64/lib/QtGui.framework/Headers/qpen.h \
+		/Users/Sangwoo/Qt/5.12.5/clang_64/lib/QtWidgets.framework/Headers/QWidget \
+		/Users/Sangwoo/Qt/5.12.5/clang_64/lib/QtWidgets.framework/Headers/qwidget.h \
+		../Physics_engine/world.h \
+		/Users/Sangwoo/Qt/5.12.5/clang_64/lib/QtWidgets.framework/Headers/QOpenGLWidget \
+		/Users/Sangwoo/Qt/5.12.5/clang_64/lib/QtWidgets.framework/Headers/qopenglwidget.h \
 		/Users/Sangwoo/Qt/5.12.5/clang_64/lib/QtWidgets.framework/Headers/QMainWindow \
 		/Users/Sangwoo/Qt/5.12.5/clang_64/lib/QtWidgets.framework/Headers/qmainwindow.h \
-		../Physics_engine/object.h \
-		../Physics_engine/collision.h \
 		/Users/Sangwoo/Qt/5.12.5/clang_64/lib/QtWidgets.framework/Headers/QApplication \
 		/Users/Sangwoo/Qt/5.12.5/clang_64/lib/QtWidgets.framework/Headers/qapplication.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o ../Physics_engine/main.cpp
 
 mainwindow.o: ../Physics_engine/mainwindow.cpp ../Physics_engine/mainwindow.h \
 		../Physics_engine/engine.h \
-		/Users/Sangwoo/Qt/5.12.5/clang_64/lib/QtWidgets.framework/Headers/QMainWindow \
-		/Users/Sangwoo/Qt/5.12.5/clang_64/lib/QtWidgets.framework/Headers/qmainwindow.h \
-		ui_mainwindow.h \
+		/Users/Sangwoo/Qt/5.12.5/clang_64/lib/QtGui.framework/Headers/QBrush \
+		/Users/Sangwoo/Qt/5.12.5/clang_64/lib/QtGui.framework/Headers/qbrush.h \
+		/Users/Sangwoo/Qt/5.12.5/clang_64/lib/QtGui.framework/Headers/QFont \
+		/Users/Sangwoo/Qt/5.12.5/clang_64/lib/QtGui.framework/Headers/qfont.h \
+		/Users/Sangwoo/Qt/5.12.5/clang_64/lib/QtGui.framework/Headers/QPen \
+		/Users/Sangwoo/Qt/5.12.5/clang_64/lib/QtGui.framework/Headers/qpen.h \
+		/Users/Sangwoo/Qt/5.12.5/clang_64/lib/QtWidgets.framework/Headers/QWidget \
+		/Users/Sangwoo/Qt/5.12.5/clang_64/lib/QtWidgets.framework/Headers/qwidget.h \
 		../Physics_engine/world.h \
 		/Users/Sangwoo/Qt/5.12.5/clang_64/lib/QtWidgets.framework/Headers/QOpenGLWidget \
 		/Users/Sangwoo/Qt/5.12.5/clang_64/lib/QtWidgets.framework/Headers/qopenglwidget.h \
+		/Users/Sangwoo/Qt/5.12.5/clang_64/lib/QtWidgets.framework/Headers/QMainWindow \
+		/Users/Sangwoo/Qt/5.12.5/clang_64/lib/QtWidgets.framework/Headers/qmainwindow.h \
+		ui_mainwindow.h \
 		/Users/Sangwoo/Qt/5.12.5/clang_64/lib/QtCore.framework/Headers/QTimer \
 		/Users/Sangwoo/Qt/5.12.5/clang_64/lib/QtCore.framework/Headers/qtimer.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o mainwindow.o ../Physics_engine/mainwindow.cpp
 
 object.o: ../Physics_engine/object.cpp ../Physics_engine/object.h \
-		../Physics_engine/engine.h
+		../Physics_engine/engine.h \
+		/Users/Sangwoo/Qt/5.12.5/clang_64/lib/QtGui.framework/Headers/QBrush \
+		/Users/Sangwoo/Qt/5.12.5/clang_64/lib/QtGui.framework/Headers/qbrush.h \
+		/Users/Sangwoo/Qt/5.12.5/clang_64/lib/QtGui.framework/Headers/QFont \
+		/Users/Sangwoo/Qt/5.12.5/clang_64/lib/QtGui.framework/Headers/qfont.h \
+		/Users/Sangwoo/Qt/5.12.5/clang_64/lib/QtGui.framework/Headers/QPen \
+		/Users/Sangwoo/Qt/5.12.5/clang_64/lib/QtGui.framework/Headers/qpen.h \
+		/Users/Sangwoo/Qt/5.12.5/clang_64/lib/QtWidgets.framework/Headers/QWidget \
+		/Users/Sangwoo/Qt/5.12.5/clang_64/lib/QtWidgets.framework/Headers/qwidget.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o object.o ../Physics_engine/object.cpp
 
 world.o: ../Physics_engine/world.cpp ../Physics_engine/world.h \
 		/Users/Sangwoo/Qt/5.12.5/clang_64/lib/QtWidgets.framework/Headers/QOpenGLWidget \
 		/Users/Sangwoo/Qt/5.12.5/clang_64/lib/QtWidgets.framework/Headers/qopenglwidget.h \
 		../Physics_engine/engine.h \
+		/Users/Sangwoo/Qt/5.12.5/clang_64/lib/QtGui.framework/Headers/QBrush \
+		/Users/Sangwoo/Qt/5.12.5/clang_64/lib/QtGui.framework/Headers/qbrush.h \
+		/Users/Sangwoo/Qt/5.12.5/clang_64/lib/QtGui.framework/Headers/QFont \
+		/Users/Sangwoo/Qt/5.12.5/clang_64/lib/QtGui.framework/Headers/qfont.h \
+		/Users/Sangwoo/Qt/5.12.5/clang_64/lib/QtGui.framework/Headers/QPen \
+		/Users/Sangwoo/Qt/5.12.5/clang_64/lib/QtGui.framework/Headers/qpen.h \
+		/Users/Sangwoo/Qt/5.12.5/clang_64/lib/QtWidgets.framework/Headers/QWidget \
+		/Users/Sangwoo/Qt/5.12.5/clang_64/lib/QtWidgets.framework/Headers/qwidget.h \
 		/Users/Sangwoo/Qt/5.12.5/clang_64/lib/QtCore.framework/Headers/QTimer \
 		/Users/Sangwoo/Qt/5.12.5/clang_64/lib/QtCore.framework/Headers/qtimer.h \
 		/Users/Sangwoo/Qt/5.12.5/clang_64/lib/QtGui.framework/Headers/QMouseEvent \
-		/Users/Sangwoo/Qt/5.12.5/clang_64/lib/QtGui.framework/Headers/qevent.h
+		/Users/Sangwoo/Qt/5.12.5/clang_64/lib/QtGui.framework/Headers/qevent.h \
+		/Users/Sangwoo/Qt/5.12.5/clang_64/lib/QtGui.framework/Headers/QPainter \
+		/Users/Sangwoo/Qt/5.12.5/clang_64/lib/QtGui.framework/Headers/qpainter.h \
+		/Users/Sangwoo/Qt/5.12.5/clang_64/lib/QtCore.framework/Headers/QDebug \
+		/Users/Sangwoo/Qt/5.12.5/clang_64/lib/QtCore.framework/Headers/qdebug.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o world.o ../Physics_engine/world.cpp
 
 moc_mainwindow.o: moc_mainwindow.cpp 

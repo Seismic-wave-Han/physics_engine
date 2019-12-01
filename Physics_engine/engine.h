@@ -6,16 +6,10 @@
 #include <utility>
 #include <cmath>
 
-
-class XY{
-public:
-    XY(){}
-    XY(double x, double y): x(x), y(y){}
-    XY(const XY &xy): x(xy.x), y(xy.y){}
-public:
-    double x = 0;
-    double y = 0;
-};
+#include <QBrush>
+#include <QFont>
+#include <QPen>
+#include <QWidget>
 
 class Engine{
 public:
@@ -33,7 +27,6 @@ public:
 private:
     double g = 9.8;
     double mu = 0;
-
 
 };
 #endif // ENGINE_H

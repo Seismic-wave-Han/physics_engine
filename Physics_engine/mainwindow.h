@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include "engine.h"
+#include "world.h"
 
 #include <QMainWindow>
 //#include <QHBoxLayout>
@@ -29,9 +30,15 @@ public:
 private slots:
     void on_applyButton_clicked();
     void on_defaultButton_clicked();
+//    void positionXShow();
+    void on_setButton_clicked();
+//    void shapeChanged();
+
 private:
     Ui::MainWindow *ui;
     Engine engine;
+    World *world;
+
 //    World *world;
 //    QLabel *title;
 

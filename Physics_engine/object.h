@@ -7,42 +7,45 @@
 #include <vector>
 #include <utility>
 #include <cmath>
+#include <QPointF>
 
 class Object : public Engine
 {
 public:
-    Object();
-    Object(XY xy): position(xy){}
-    
+    Object(QString shape, double mass, double sizeX, double sizeY, double velocityX=0, double velocityY=0, double restitution=1);
+    Object(double mass, double velocityX=0, double velocityY=0, double restitution=1);
+
     void Velocity(double &t){
         double g = Get_gravity();
 //        velocity.y=ve-g*t
     }
 
 public:
-    XY position = {0, 0};
-    XY velocity = {0, 0};
+    QPointF position = {0, 0};
+    QPointF velocity = {0, 0};
     double mass = 10;
     double restitution = 1.0;
+
 
 };
 
 class Rectangle : public Object{
 public:
-    Rectangle(){}
-    Rectangle(double width, double height): width(width), height(height){}
-    Rectangle(XY position): Object(position) {}
+    Rectangle(double mass, double sizeX, double sizeY, double velocityX, double velocityY, double restitution);
 
-    XY Left_bottom() const { return XY(position.x-0.5*width, position.y-0.5*height); }
-    XY Right_top() const { return XY(position.x+0.5*width, position.y+0.5*height); }
+    QPointF Left_bottom() const { return QPointF(position.x()-0.5*width, position.y()-0.5*height); }
+    QPointF Right_top() const { return QPointF(position.x()+0.5*width, position.y()+0.5*height); }
 
 
 public:
     double width=10, height=10;
+
 };
 
 class Circle : public Object{
 public:
+    Circle(double mass, double sizeX, double sizeY, double velocityX, double velocityY, double restitution);
+
     double radius=5;
 };
 
