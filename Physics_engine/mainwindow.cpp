@@ -15,10 +15,14 @@ MainWindow::MainWindow(QWidget *parent)
 
     ui->gravityValue->setRange(0, 20);
     ui->gravityValue->setSpecialValueText(tr("9.8 (Earth)"));
+    ui->gravityValue->setValue(9.8);
+
     ui->frictionValue->setRange(0, 1);
     ui->velocityValueX->setRange(-100,100);
     ui->velocityValueY->setRange(-100,100);
-
+    ui->restitutionValue->setRange(0,1);
+    ui->restitutionValue->setSpecialValueText(tr("1.0 (Ideal)"));
+    ui->restitutionValue->setValue(1.0);
     connect(ui->applyButton, SIGNAL(clicked()),
             this, SLOT(on_applyButton_clicked()));
     connect(ui->defaultButton, SIGNAL(clicked()),
@@ -40,7 +44,7 @@ MainWindow::MainWindow(QWidget *parent)
 // QTimer는 Object의 event 를 triger 한다.
     QTimer *timer = new QTimer(this);
     connect(timer, &QTimer::timeout, world, &World::animate); // todo: ui랑 연결이 안되어 있음..
-    timer->start(10); // 계산하는 간격을 의미하는 듯. fps와 비슷.
+    timer->start(1); // 계산하는 간격을 의미하는 듯. fps와 비슷.
 }
 
 MainWindow::~MainWindow()
@@ -84,12 +88,12 @@ void MainWindow::on_setButton_clicked()
     double sizeY = ui->sizeValueY->value();
     double velocityX = ui->velocityValueX->value() ;
     double velocityY = ui->velocityValueY->value() ;
-    double restitution = ui->velocityValueY->value();
+    double restitution = ui->restitutionValue->value();
     if (shape == "Circle"){
-        Circle circle = Circle(mass, sizeX, sizeY, velocityX, velocityY, restitution, &world->dt);
+        Circle circle = Circle(mass, sizeX, sizeY, velocityX, velocityY, restitution);
         world->createCircleEvent(circle);
     } else if (shape == "Rectangle"){
-        Rectangle rectangle = Rectangle(mass, sizeX, sizeY, velocityX, velocityY, restitution, &world->dt);
+        Rectangle rectangle = Rectangle(mass, sizeX, sizeY, velocityX, velocityY, restitution);
         world->createRectEvent(rectangle);
     }
 

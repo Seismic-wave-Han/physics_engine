@@ -27,6 +27,8 @@ public:
 private:
     double g = 9.8;
     double mu = 0;
+    std::vector<std::vector<bool>> ObjectvsObject;
+    std::vector<bool> ObjectvsGround;
 
 };
 #endif // ENGINE_H
