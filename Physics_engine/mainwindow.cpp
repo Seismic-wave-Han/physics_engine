@@ -23,20 +23,23 @@ MainWindow::MainWindow(QWidget *parent)
     ui->restitutionValue->setRange(0,1);
     ui->restitutionValue->setValue(1.0);
 
+    // create World object
     world = new World(&engine, this);
-    ui->verticalLayout->addWidget(world, 0, 0);
+    ui->verticalLayout->addWidget(world, 0, 0); // add to ui
 
-// QTimer는 Object의 event 를 triger 한다.
+    // QTimer for animation
     QTimer *timer = new QTimer(this);
-    connect(timer, &QTimer::timeout, world, &World::animate); // todo: ui랑 연결이 안되어 있음..
-    timer->start(1); // 계산하는 간격을 의미하는 듯. fps와 비슷.
+    connect(timer, &QTimer::timeout, world, &World::animate);
+    timer->start(1);
 }
 
+// destructor
 MainWindow::~MainWindow()
 {
     delete ui;
 }
 
+// slots related with ui
 void MainWindow::on_applyButton_clicked()
 {
     double gravity = ui->gravityValue->value();
@@ -63,15 +66,14 @@ void MainWindow::on_setButton_clicked()
     double velocityX = ui->velocityValueX->value() ;
     double velocityY = ui->velocityValueY->value() ;
     double restitution = ui->restitutionValue->value();
+    bool isMovingY=true;
     if (shape == "Circle"){
-        Circle circle = Circle(&engine, mass, sizeX, sizeY, velocityX, velocityY, restitution);
+        Circle circle = Circle(&engine, mass, sizeX, sizeY, velocityX, velocityY, restitution, isMovingY);
         world->createCircleEvent(circle);
     } else if (shape == "Rectangle"){
-        Rectangle rectangle = Rectangle(&engine, mass, sizeX, sizeY, velocityX, velocityY, restitution);
+        Rectangle rectangle = Rectangle(&engine, mass, sizeX, sizeY, velocityX, velocityY, restitution, isMovingY);
         world->createRectEvent(rectangle);
     }
-
-    //    painter.drawEllipse(QPointF(x,y), radius, radius);
 }
 
 void MainWindow::on_startButton_clicked()
@@ -79,7 +81,6 @@ void MainWindow::on_startButton_clicked()
     double dt=0.1;
     engine.setDelta(dt);
 }
-
 
 void MainWindow::on_stopButton_clicked()
 {

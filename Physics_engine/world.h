@@ -28,7 +28,9 @@ public:
     int dt;
     int positionX;
     int positionY;
-    std::vector<Circle> objects;
+    std::vector<Circle> circles;
+    std::vector<Rectangle> rectangles;
+
 };
 
 #endif // WORLD_H

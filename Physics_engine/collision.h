@@ -37,19 +37,26 @@ bool Rec_vs_cir(const Rectangle &rec, const Circle &cir){
 }
 
 bool rectangleVsGround(Rectangle &rec){
-    double ground=500;
-    if(rec.Right_bottom().y()<ground) return false;
-    return true;
+    qreal ground=400;
+    if(rec.Right_bottom().y() > ground) {
+        rec.position.setY( ground - 0.5*rec.height);
+        if (rec.velocity.ry() < 5) {
+            rec.stopY();
+            rec.velocity.setY(0);
+        }
+        return true;
+
+    }
+    return false;
 }
 
 bool circleVsGround(Circle &cir){
-    double ground=400;
+    qreal ground=400;
     if((cir.position.y()+cir.radius) > ground) {
         cir.position.setY( ground - cir.radius);
-        if (cir.velocity.ry()<1e-1) {
-            qDebug() << "###stop motion###";
+        if(cir.velocity.ry() < 5){
+            cir.stopY();
             cir.velocity.setY(0);
-//            cir.isMoving=false;
         }
         return true;
     }

@@ -33,13 +33,17 @@ void World::paintEvent(QPaintEvent *event){
     painter.setBrush(QBrush(Qt::red));
     painter.setPen(QPen(Qt::blue));
     painter.translate(QPointF(100,100));
-    for (auto &circle: objects){
+    for (auto &circle: circles){
         circle.bounce();
-        circle.update();
-
+        circle.positionUpdate();
 //        qDebug() << "gravity:"<< circle.engine->Get_gravity();
         painter.drawEllipse(QPointF(circle.position.rx(), circle.position.ry()), circle.radius, circle.radius);
-
+    }
+    for (auto &rectangle: rectangles){
+        rectangle.bounce();
+        rectangle.positionUpdate();
+//        qDebug() << rectangle.Right_bottom().ry();
+        painter.drawRect(rectangle.Left_top().rx(), rectangle.Left_top().ry(),rectangle.width, rectangle.height);
     }
 
 //    qDebug() << "---cycle---";
@@ -61,12 +65,9 @@ void World::mousePressEvent(QMouseEvent *event)
 }
 
 void World::createCircleEvent(Circle circle){
-    objects.push_back(circle);
+    circles.push_back(circle);
 //    paintCircle
 }
 void World::createRectEvent(Rectangle rectangle){
-//    objects.push_back(rectangle);
-//    QPainter painter;
-//    painter.drawRect(rectangle.position.x(),rectangle.position.y(), rectangle.width, rectangle.height);
-
+    rectangles.push_back(rectangle);
 }
