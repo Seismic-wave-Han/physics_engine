@@ -5,9 +5,5 @@
 #include <QWidget>
 
 
-Engine::Engine(){
-
-
-}
 
 

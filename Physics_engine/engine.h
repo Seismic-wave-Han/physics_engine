@@ -13,7 +13,8 @@
 
 class Engine{
 public:
-    Engine();
+    Engine(){}
+    Engine(Engine &engine):g(engine.g), mu(engine.mu){}
 
     void Set_gravity(double value){
         g=value;

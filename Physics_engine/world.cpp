@@ -36,12 +36,13 @@ void World::paintEvent(QPaintEvent *event){
     for (auto &circle: objects){
         circle.bounce();
         circle.update();
-        qDebug() << "restitution:"<< circle.restitution;
+
+        qDebug() << "gravity:"<< circle.engine->Get_gravity();
         painter.drawEllipse(QPointF(circle.position.rx(), circle.position.ry()), circle.radius, circle.radius);
 
     }
 
-    qDebug() << "---cycle---";
+//    qDebug() << "---cycle---";
 
     painter.end();
 }

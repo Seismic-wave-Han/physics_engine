@@ -4,6 +4,7 @@
 #include "engine.h"
 #include "object.h"
 #include <QTimer>
+#include <QDebug>
 
 //#include <QLCDNumber>
 
@@ -13,32 +14,22 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
 
-    ui->gravityValue->setRange(0, 20);
+    // ui basic settings
+    ui->gravityValue->setRange(0, 100);
     ui->gravityValue->setValue(9.8);
-    ui->gravityValue->setSpecialValueText(tr("9.8 (Earth)"));
     ui->frictionValue->setRange(0, 1);
     ui->velocityValueX->setRange(-100,100);
     ui->velocityValueY->setRange(-100,100);
     ui->restitutionValue->setRange(0,1);
     ui->restitutionValue->setValue(1.0);
-    ui->restitutionValue->setSpecialValueText(tr("1.0 (Ideal)"));
+
     connect(ui->applyButton, SIGNAL(clicked()),
             this, SLOT(on_applyButton_clicked()));
     connect(ui->defaultButton, SIGNAL(clicked()),
             this, SLOT(on_defaultButton_clicked()));
 
-    connect(ui->defaultButton, SIGNAL(clicked()),
-            this, SLOT(on_defaultButton_clicked()));
-
     world = new World(&engine, this);
     ui->verticalLayout->addWidget(world, 0, 0);
-//    bool enable=true;
-//    world->setMouseTracking(enable);
-
-//    connect(ui->shapeComboBox, SIGNAL(activated(int)),
-//            this, SLOT(shapeChanged()));
-
-//    connect(world, &World::positionXChanged, ui->positionX, SLOT(positionXShow()));
 
 // QTimer는 Object의 event 를 triger 한다.
     QTimer *timer = new QTimer(this);
@@ -55,6 +46,7 @@ void MainWindow::on_applyButton_clicked()
 {
     double gravity = ui->gravityValue->value();
     engine.Set_gravity(gravity);
+    qDebug() << engine.Get_gravity();
     double friction = ui->frictionValue->value();
     engine.Set_friction(friction);
 }
@@ -89,10 +81,10 @@ void MainWindow::on_setButton_clicked()
     double velocityY = ui->velocityValueY->value() ;
     double restitution = ui->restitutionValue->value();
     if (shape == "Circle"){
-        Circle circle = Circle(mass, sizeX, sizeY, velocityX, velocityY, restitution);
+        Circle circle = Circle(&engine, mass, sizeX, sizeY, velocityX, velocityY, restitution);
         world->createCircleEvent(circle);
     } else if (shape == "Rectangle"){
-        Rectangle rectangle = Rectangle(mass, sizeX, sizeY, velocityX, velocityY, restitution);
+        Rectangle rectangle = Rectangle(&engine, mass, sizeX, sizeY, velocityX, velocityY, restitution);
         world->createRectEvent(rectangle);
     }
 

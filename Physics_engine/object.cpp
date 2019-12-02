@@ -1,20 +1,21 @@
 #include "object.h"
 #include "collision.h"
+#include "engine.h"
 
 #include <QDebug>
 
 
-Object::Object(QString shape, double mass, double sizeX, double sizeY, double velocityX, double velocityY, double restitution){
-    if (shape == "Rectangle"){
-        Rectangle(mass, sizeX, sizeY, velocityX, velocityY, restitution);
-    }
-    else {
-        Circle(mass, sizeX, sizeY, velocityX, velocityY, restitution);
-    }
-}
+//Object::Object(QString shape, double mass, double sizeX, double sizeY, double velocityX, double velocityY, double restitution){
+//    if (shape == "Rectangle"){
+//        Rectangle(engine, mass, sizeX, sizeY, velocityX, velocityY, restitution);
+//    }
+//    else {
+//        Circle(engine, mass, sizeX, sizeY, velocityX, velocityY, restitution);
+//    }
+//}
 
-Object::Object(double mass, double velocityX, double velocityY, double restitution):
-    mass(mass), velocity(QPointF(velocityX,velocityY)), restitution(restitution)
+Object::Object(Engine *engine, double mass, double velocityX, double velocityY, double restitution):
+    engine(engine), mass(mass), velocity(QPointF(velocityX,velocityY)), restitution(restitution)
 {
     qDebug() << "Object is created.";
 }
@@ -27,15 +28,16 @@ void Object::update(){
 }
 
 void Object::positionUpdate(){
-    double g=Get_gravity();
+    double g=engine->Get_gravity(); // todo:
+//    double g=9.8;
     position.rx()+=velocity.rx()*delta;
     position.ry()+=velocity.ry()*delta;
     velocity.ry()+=g*delta;
-    qDebug() << position.rx()<< ", "<< position.ry();
+//    qDebug() << position.rx()<< ", "<< position.ry();
 }
 
-Rectangle::Rectangle(double mass, double sizeX, double sizeY, double velocityX, double velocityY, double restitution):
-   Object(mass,velocityX, velocityY, restitution), width(sizeX), height(sizeY)
+Rectangle::Rectangle(Engine *engine, double mass, double sizeX, double sizeY, double velocityX, double velocityY, double restitution):
+   Object(engine, mass,velocityX, velocityY, restitution), width(sizeX), height(sizeY)
 {
 
 }
@@ -44,8 +46,8 @@ void Rectangle::bounce(){
     if (rectangleVsGround(*this)) velocity.ry()=-restitution*velocity.ry();
 }
 
-Circle::Circle(double mass, double sizeX, double sizeY, double velocityX, double velocityY, double restitution):
-    Object(mass,velocityX, velocityY, restitution), radius(sizeX)
+Circle::Circle(Engine *engine, double mass, double sizeX, double sizeY, double velocityX, double velocityY, double restitution):
+    Object(engine, mass,velocityX, velocityY, restitution), radius(sizeX)
 {
 
 }
