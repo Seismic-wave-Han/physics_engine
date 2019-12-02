@@ -16,16 +16,21 @@ public:
     Engine(){}
     Engine(Engine &engine):g(engine.g), mu(engine.mu){}
 
-    void Set_gravity(double value){
+    void setGravity(double value){
         g=value;
     }
-    double Get_gravity() {return g;}
-    void Set_friction(double value){
+    double getGravity() {return g;}
+    void setFriction(double value){
         mu=value;
     }
-    double Get_friction() {return mu;}
+    double getFriction() {return mu;}
+    void setDelta(double value){
+        delta=value;
+    }
+    double getDelta() {return delta;}
     
 private:
+    double delta=0.1;
     double g = 9.8;
     double mu = 0;
     std::vector<std::vector<bool>> ObjectvsObject;

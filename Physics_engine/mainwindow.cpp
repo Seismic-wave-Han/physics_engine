@@ -23,11 +23,6 @@ MainWindow::MainWindow(QWidget *parent)
     ui->restitutionValue->setRange(0,1);
     ui->restitutionValue->setValue(1.0);
 
-    connect(ui->applyButton, SIGNAL(clicked()),
-            this, SLOT(on_applyButton_clicked()));
-    connect(ui->defaultButton, SIGNAL(clicked()),
-            this, SLOT(on_defaultButton_clicked()));
-
     world = new World(&engine, this);
     ui->verticalLayout->addWidget(world, 0, 0);
 
@@ -45,31 +40,19 @@ MainWindow::~MainWindow()
 void MainWindow::on_applyButton_clicked()
 {
     double gravity = ui->gravityValue->value();
-    engine.Set_gravity(gravity);
-    qDebug() << engine.Get_gravity();
+    engine.setGravity(gravity);
     double friction = ui->frictionValue->value();
-    engine.Set_friction(friction);
+    engine.setFriction(friction);
 }
 
 void MainWindow::on_defaultButton_clicked()
 {
     ui->gravityValue->setValue(9.8);
-    engine.Set_gravity(9.8);
+    engine.setGravity(9.8);
     ui->frictionValue->setValue(0);
-    engine.Set_friction(0);
+    engine.setFriction(0);
 }
 
-//void MainWindow::positionXShow(){
-//    ui->positionX->setText(QString("world->positionX"));
-//}
-
-//void MainWindow::shapeChanged(){
-
-
-//            RenderArea::Shape shape = RenderArea::Shape(shapeComboBox->itemData(
-//                    shapeComboBox->currentIndex(), IdRole).toInt());
-//            renderArea->setShape(shape);
-//}
 
 void MainWindow::on_setButton_clicked()
 {
@@ -89,4 +72,16 @@ void MainWindow::on_setButton_clicked()
     }
 
     //    painter.drawEllipse(QPointF(x,y), radius, radius);
+}
+
+void MainWindow::on_startButton_clicked()
+{
+    double dt=0.1;
+    engine.setDelta(dt);
+}
+
+
+void MainWindow::on_stopButton_clicked()
+{
+    engine.setDelta(0);
 }

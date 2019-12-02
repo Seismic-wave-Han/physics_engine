@@ -34,6 +34,10 @@ private slots:
     void on_setButton_clicked();
 //    void shapeChanged();
 
+    void on_startButton_clicked();
+
+    void on_stopButton_clicked();
+
 private:
     Ui::MainWindow *ui;
     Engine engine;

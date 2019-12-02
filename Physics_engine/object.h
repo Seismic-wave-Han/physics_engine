@@ -23,7 +23,7 @@ public:
 public:
 //    int *dt;
     Engine *engine;
-    double delta=0.1;
+
     QPointF position = {0, 0};
     QPointF velocity = {0, 0};
     double mass = 10;

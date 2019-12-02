@@ -28,8 +28,8 @@ void Object::update(){
 }
 
 void Object::positionUpdate(){
-    double g=engine->Get_gravity(); // todo:
-//    double g=9.8;
+    double g=engine->getGravity();
+    double delta=engine->getDelta();
     position.rx()+=velocity.rx()*delta;
     position.ry()+=velocity.ry()*delta;
     velocity.ry()+=g*delta;

@@ -37,7 +37,7 @@ void World::paintEvent(QPaintEvent *event){
         circle.bounce();
         circle.update();
 
-        qDebug() << "gravity:"<< circle.engine->Get_gravity();
+//        qDebug() << "gravity:"<< circle.engine->Get_gravity();
         painter.drawEllipse(QPointF(circle.position.rx(), circle.position.ry()), circle.radius, circle.radius);
 
     }
