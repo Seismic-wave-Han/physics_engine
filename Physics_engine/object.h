@@ -27,6 +27,7 @@ public:
     QPointF velocity = {0, 0};
     double mass = 10;
     double restitution = 1.0;
+//    bool isMoving=true;
 
 
 };

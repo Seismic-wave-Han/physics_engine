@@ -20,7 +20,9 @@ Object::Object(double mass, double velocityX, double velocityY, double restituti
 }
 
 void Object::update(){
+//    if(isMoving==true){
     positionUpdate();
+//    }
 //    bounce();
 }
 
@@ -50,10 +52,7 @@ Circle::Circle(double mass, double sizeX, double sizeY, double velocityX, double
 
 void Circle::bounce(){
     if (circleVsGround(*this)) {
-        qDebug() << "stop motion pdfksdlfjs";
-        qDebug() << "stop motion pdfksdlfjs";
-        qDebug() << "stop motion pdfksdlfjs";
-        qDebug() << "stop motion pdfksdlfjs";
+        qDebug() << "moving!";
         velocity.setY(-restitution*velocity.ry()*0.98); // 0.98 for stability
     }
 }

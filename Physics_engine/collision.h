@@ -49,6 +49,7 @@ bool circleVsGround(Circle &cir){
         if (cir.velocity.ry()<1e-1) {
             qDebug() << "###stop motion###";
             cir.velocity.setY(0);
+//            cir.isMoving=false;
         }
         return true;
     }

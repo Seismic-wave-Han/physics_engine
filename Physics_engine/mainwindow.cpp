@@ -14,15 +14,14 @@ MainWindow::MainWindow(QWidget *parent)
     ui->setupUi(this);
 
     ui->gravityValue->setRange(0, 20);
-    ui->gravityValue->setSpecialValueText(tr("9.8 (Earth)"));
     ui->gravityValue->setValue(9.8);
-
+    ui->gravityValue->setSpecialValueText(tr("9.8 (Earth)"));
     ui->frictionValue->setRange(0, 1);
     ui->velocityValueX->setRange(-100,100);
     ui->velocityValueY->setRange(-100,100);
     ui->restitutionValue->setRange(0,1);
-    ui->restitutionValue->setSpecialValueText(tr("1.0 (Ideal)"));
     ui->restitutionValue->setValue(1.0);
+    ui->restitutionValue->setSpecialValueText(tr("1.0 (Ideal)"));
     connect(ui->applyButton, SIGNAL(clicked()),
             this, SLOT(on_applyButton_clicked()));
     connect(ui->defaultButton, SIGNAL(clicked()),
