@@ -1,8 +1,6 @@
 #ifndef OBJECT_H
 #define OBJECT_H
 
-#include "engine.h"
-
 #include <iostream>
 #include <vector>
 #include <utility>
@@ -10,7 +8,7 @@
 #include <QPointF>
 
 struct Manifold;
-class Object;
+class Engine;
 
 class Object
 {
@@ -18,18 +16,18 @@ public:
     Object(Engine *engine, QString shape, double mass, double sizeX, double sizeY, double velocityX=0, double velocityY=0, double restitution=0.95);
     Object(Engine *engine, double mass, double velocityX=0, double velocityY=0, double restitution=0.95, bool isMovingY=true);
 
-    virtual ~Object()=0;
+    virtual ~Object(){}
 
-    void update();
+//    void update();
 
     void positionUpdate();
-//    virtual void bounce();
-//    virtual void bounce()=0;
+    virtual void bounce()=0;
 
-//    void setMassInversion(){
-//        if(mass==0) massInv=0;
-//        else massInv=1/mass;
-//    }
+
+    void setMassInversion(){
+        if(mass==0) massInv=0;
+        else massInv=1/mass;
+    }
 
     void stopY(){isMovingY=false;}
 
@@ -46,7 +44,7 @@ public:
     QPointF position = {0, 0};
     QPointF velocity = {0, 0};
     double mass = 10;
-//    double massInv = 0.1;
+    double massInv;
     double restitution = 0.95;
     bool isMovingY=true;
 };
@@ -60,7 +58,7 @@ public:
     double getWidth() override {return width;}
     double getHeight() override {return height;}
 
-    void bounce() ;
+    void bounce() override;
 
 public:
     double width=10, height=10;
@@ -73,7 +71,7 @@ class Circle : public Object{
 public:
     Circle(Engine *engine, double mass, double sizeX, double sizeY, double velocityX, double velocityY, double restitution, bool isMovingY);
 
-    void bounce() ;
+    void bounce() override;
 //    void stopY(){isMovingY=false;};
     double getRadius() override {return radius;}
 
@@ -87,43 +85,15 @@ struct Manifold{
         A(A), B(B), penetration(penetration), normal(normal)
     {}
 
+    void updateCircleVsCircle();
+    void updateRectangleVsRectangle();
+
     Object *A;
     Object *B;
     double penetration=0;
     QPointF normal={0,0};
 };
 
-//struct ManifoldCC{
-//    ManifoldCC(Circle *A, Circle *B, double penetration, QPointF normal):
-//        A(A), B(B), penetration(penetration), normal(normal)
-//    {}
 
-//    Circle *A;
-//    Circle *B;
-//    double penetration;
-//    QPointF normal;
-//};
-
-//struct ManifoldRR{
-//    ManifoldRR(Rectangle *A, Rectangle *B, double penetration, QPointF normal):
-//        A(A), B(B), penetration(penetration), normal(normal)
-//    {}
-
-//    Rectangle *A;
-//    Rectangle *B;
-//    double penetration;
-//    QPointF normal;
-//};
-
-//struct ManifoldRC{
-//    ManifoldRC(Rectangle *A, Circle *B, double penetration, QPointF normal):
-//        A(A), B(B), penetration(penetration), normal(normal)
-//    {}
-
-//    Rectangle *A;
-//    Circle *B;
-//    double penetration;
-//    QPointF normal;
-//};
 
 #endif // OBJECT_H

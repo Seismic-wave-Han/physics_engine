@@ -2,8 +2,11 @@
 #define COLLISION_H
 
 #include "object.h"
+
 #include <QDebug>
 #include <cmath>
+#include <QPointF>
+
 
 // simple distance function: position to position
 double Distance(const QPointF &a, const QPointF &b = {0 , 0}){
@@ -152,7 +155,7 @@ bool circleVsGround(Circle &cir){
     }
     return false;
 }
-/*
+
 void positionCorrection(Manifold *m){
     const double percent = 0.8; // usually 20% to 80%
     const double  slop = 0.01; // usually 0.01 to 0.1
@@ -188,6 +191,6 @@ void resolveCollision(Manifold *m){
     A->velocity -= A->massInv * impulse;
     B->velocity += B->massInv * impulse;
 }
-*/
+
 
 #endif // COLLISION_H

@@ -19,7 +19,7 @@ Object::Object(Engine *engine, QString shape, double mass, double sizeX, double 
 Object::Object(Engine *engine, double mass, double velocityX, double velocityY, double restitution, bool isMovingY):
     engine(engine), mass(mass), velocity(QPointF(velocityX,velocityY)), restitution(restitution), isMovingY(isMovingY)
 {
-//    setMassInversion();
+    setMassInversion();
     qDebug() << "Object is created.";
 }
 
@@ -55,5 +55,21 @@ void Circle::bounce(){
     if (collision) {
         qDebug() << "cir bounce!";
         velocity.setY(-restitution*std::sqrt(std::abs(velocity.ry()*velocity.ry()-5))*0.98); // 0.98 for stability
+    }
+}
+
+void Manifold::updateCircleVsCircle(){
+    bool collision = circleVsCircle(this);
+    if (collision) {
+        positionCorrection(this);
+        resolveCollision(this);
+    }
+}
+
+void Manifold::updateRectangleVsRectangle(){
+    bool collision = rectangleVsRectangle(this);
+    if (collision) {
+        positionCorrection(this);
+        resolveCollision(this);
     }
 }

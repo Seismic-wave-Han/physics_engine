@@ -22,6 +22,12 @@ MainWindow::MainWindow(QWidget *parent)
     ui->velocityValueY->setRange(-100,100);
     ui->restitutionValue->setRange(0,1);
     ui->restitutionValue->setValue(1.0);
+    ui->sizeValueX->setRange(1,100);
+    ui->sizeValueY->setRange(1,100);
+    ui->sizeValueX->setValue(5);
+    ui->sizeValueY->setValue(5);
+    ui->massValue->setValue(10);
+
 
     // create World object
     world = new World(&engine, this);

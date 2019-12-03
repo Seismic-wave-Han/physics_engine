@@ -1,7 +1,7 @@
 #include "world.h"
 #include "engine.h"
 #include "object.h"
-//#include "collision.h"
+//#include "collision.h" // 이거 넣으니까 안되더라
 
 #include <QTimer>
 #include <QMouseEvent>
@@ -9,6 +9,7 @@
 #include <QBrush>
 #include <QPen>
 #include <QDebug>
+
 
 World::World(Engine *engine, QWidget *parent):
     QOpenGLWidget(parent), engine(engine)
@@ -34,45 +35,43 @@ void World::paintEvent(QPaintEvent *event){
     painter.setBrush(QBrush(Qt::red));
     painter.setPen(QPen(Qt::blue));
     painter.translate(QPointF(100,100));
-    for (auto &circle: circles){
-        circle.bounce();
-        circle.positionUpdate();
-//        qDebug() << "radius: " << object->getRadius();
-        painter.drawEllipse(QPointF(circle.position.rx(), circle.position.ry()), circle.radius, circle.radius);
-    }
+//    for (auto &circle: circles){
+//        circle.bounce();
+//        circle.positionUpdate();
+////        qDebug() << "radius: " << object->getRadius();
+//        painter.drawEllipse(QPointF(circle.position.rx(), circle.position.ry()), circle.radius, circle.radius);
+//    }
 //    for (auto &rectangle: rectangles){
 //        rectangle.bounce();
 //        rectangle.positionUpdate();
 ////        qDebug() << rectangle.Right_bottom().ry();
 //        painter.drawRect(int(rectangle.Left_top().rx()), int(rectangle.Left_top().ry()), int(rectangle.width), int(rectangle.height)); // todo: use int spinbox, and change type of width, height to int?
 //    }
-//    size_t sizeC=circles.size();
-//    size_t sizeR=rectangles.size();
+    size_t sizeC=circles.size();
+    size_t sizeR=rectangles.size();
 
-//    for (size_t i=0; i<sizeC; ++i){
-////        Object *circleA = &circles[i];
-////        circleA->bounce();
-////        circleA->positionUpdate();
-//        circles[i].bounce();
-//        circles[i].positionUpdate();
-////        qDebug() << "radius: " << object->getRadius();
-////        for(size_t j=i+1; j<sizeC; ++j){
-////            Object *circleB = &circles[j];
-////            Manifold m(circleA, circleB);
-////            bool isCollided = circleVsCircle(&m);
-////            if (isCollided){
-////                positionCorrection(&m);
-////                resolveCollision(&m);
-////            }
-////        }
-//        painter.drawEllipse(QPointF(circles[i].position.rx(), circles[i].position.ry()), circles[i].getRadius(), circles[i].getRadius());
-////        painter.drawEllipse(QPointF(circleA->position.rx(), circleA->position.ry()), circleA->getRadius(), circleA->getRadius());
-//    }
-    for (auto &rectangle: rectangles){
-        rectangle.bounce();
-        rectangle.positionUpdate();
-//        qDebug() << rectangle.Right_bottom().ry();
-        painter.drawRect(int(rectangle.Left_top().rx()), int(rectangle.Left_top().ry()), int(rectangle.width), int(rectangle.height)); // todo: use int spinbox, and change type of width, height to int?
+    for (size_t i=0; i<sizeC; ++i){
+        Object *circleA = &circles[i];
+        circleA->positionUpdate();
+        circleA->bounce();
+        for(size_t j=i+1; j<sizeC; ++j){
+            Object *circleB = &circles[j];
+            Manifold *m= new Manifold(circleA, circleB);
+            m->updateCircleVsCircle();
+        }
+        painter.drawEllipse(QPointF(circleA->position.rx(), circleA->position.ry()), circleA->getRadius(), circleA->getRadius());
+    }
+
+    for (size_t i=0; i<sizeR; ++i){
+        Object *rectangleA = &rectangles[i];
+        rectangleA->positionUpdate();
+        rectangleA->bounce();
+        for(size_t j=i+1; j<sizeR; ++j){
+            Object *rectangleB = &rectangles[j];
+            Manifold *m= new Manifold(rectangleA, rectangleB);
+            m->updateRectangleVsRectangle();
+        }
+        painter.drawRect(int(rectangleA->Left_top().rx()), int(rectangleA->Left_top().ry()), int(rectangleA->getWidth()), int(rectangleA->getHeight())); // todo: use int spinbox, and change type of width, height to int?
     }
 
 
