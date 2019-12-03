@@ -19,7 +19,7 @@ World::World(Engine *engine, QWidget *parent):
 
 void World::animate()
 {
-    dt = (dt+qobject_cast<QTimer*>(sender())->interval())%1000;
+    dt = (dt+qobject_cast<QTimer*>(sender())->interval())%1000; //todo: Does 'dt' need?
     update();
 }
 
@@ -36,14 +36,14 @@ void World::paintEvent(QPaintEvent *event){
     for (auto &circle: circles){
         circle.bounce();
         circle.positionUpdate();
-//        qDebug() << "gravity:"<< circle.engine->Get_gravity();
+//        qDebug() << "radius: " << object->getRadius();
         painter.drawEllipse(QPointF(circle.position.rx(), circle.position.ry()), circle.radius, circle.radius);
     }
     for (auto &rectangle: rectangles){
         rectangle.bounce();
         rectangle.positionUpdate();
 //        qDebug() << rectangle.Right_bottom().ry();
-        painter.drawRect(rectangle.Left_top().rx(), rectangle.Left_top().ry(),rectangle.width, rectangle.height);
+        painter.drawRect(int(rectangle.Left_top().rx()), int(rectangle.Left_top().ry()), int(rectangle.width), int(rectangle.height)); // todo: use int spinbox, and change type of width, height to int?
     }
 
 //    qDebug() << "---cycle---";
