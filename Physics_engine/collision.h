@@ -106,6 +106,7 @@ bool rectangleVsRectangle( Manifold *m )
             }
         }
     }
+    return false;
 }
 
 
@@ -151,5 +152,42 @@ bool circleVsGround(Circle &cir){
     }
     return false;
 }
+/*
+void positionCorrection(Manifold *m){
+    const double percent = 0.8; // usually 20% to 80%
+    const double  slop = 0.01; // usually 0.01 to 0.1
+    Object *A=m->A;
+    Object *B=m->B;
+
+    QPointF correction = std::max(m->penetration - slop, 0.0 ) / (A->massInv + B->massInv) * percent * m->normal;
+    A->position -= A->massInv * correction;
+    B->position += B->massInv * correction;
+}
+
+void resolveCollision(Manifold *m){
+    Object *A=m->A;
+    Object *B=m->B;
+
+    // Calculate relative velocity
+    QPointF velocityRelative = B->velocity - A->velocity;
+
+    // Calculate relative velocity in terms of the normal direction
+    double velocityDotNormal = QPointF::dotProduct( velocityRelative, m->normal );
+
+    // Do not resolve if velocities are separating
+    if(velocityDotNormal > 0) return;
+
+    // Calculate restitution
+    double e = std::min( A->restitution, B->restitution);
+
+    // Calculate impulse scalar
+    double j = -(1 + e) * velocityDotNormal / (A->massInv + B->massInv);
+
+    // Apply impulse
+    QPointF impulse = j * m->normal;
+    A->velocity -= A->massInv * impulse;
+    B->velocity += B->massInv * impulse;
+}
+*/
 
 #endif // COLLISION_H

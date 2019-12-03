@@ -9,18 +9,28 @@
 #include <cmath>
 #include <QPointF>
 
+struct Manifold;
+class Object;
+
 class Object
 {
 public:
     Object(Engine *engine, QString shape, double mass, double sizeX, double sizeY, double velocityX=0, double velocityY=0, double restitution=0.95);
     Object(Engine *engine, double mass, double velocityX=0, double velocityY=0, double restitution=0.95, bool isMovingY=true);
 
-    virtual ~Object(){}
+    virtual ~Object()=0;
 
     void update();
 
     void positionUpdate();
-    void bounce();
+//    virtual void bounce();
+//    virtual void bounce()=0;
+
+//    void setMassInversion(){
+//        if(mass==0) massInv=0;
+//        else massInv=1/mass;
+//    }
+
     void stopY(){isMovingY=false;}
 
     virtual QPointF Left_top()const{return QPointF(0,0);}
@@ -36,6 +46,7 @@ public:
     QPointF position = {0, 0};
     QPointF velocity = {0, 0};
     double mass = 10;
+//    double massInv = 0.1;
     double restitution = 0.95;
     bool isMovingY=true;
 };
@@ -45,11 +56,11 @@ public:
     Rectangle(Engine *engine, double mass, double sizeX, double sizeY, double velocityX, double velocityY, double restitution, bool isMovingY);
 
     QPointF Left_top() const override { return QPointF(position.x()-0.5*width, position.y()-0.5*height); }
-    QPointF Right_bottom() const { return QPointF(position.x()+0.5*width, position.y()+0.5*height); }
+    QPointF Right_bottom() const override { return QPointF(position.x()+0.5*width, position.y()+0.5*height); }
     double getWidth() override {return width;}
     double getHeight() override {return height;}
 
-    void bounce();
+    void bounce() ;
 
 public:
     double width=10, height=10;
@@ -62,7 +73,7 @@ class Circle : public Object{
 public:
     Circle(Engine *engine, double mass, double sizeX, double sizeY, double velocityX, double velocityY, double restitution, bool isMovingY);
 
-    void bounce();
+    void bounce() ;
 //    void stopY(){isMovingY=false;};
     double getRadius() override {return radius;}
 
@@ -72,7 +83,7 @@ public:
 };
 
 struct Manifold{
-    Manifold(Object *A, Object *B, double penetration, QPointF normal):
+    Manifold(Object *A, Object *B, double penetration=0, QPointF normal=QPointF(0, 0)):
         A(A), B(B), penetration(penetration), normal(normal)
     {}
 

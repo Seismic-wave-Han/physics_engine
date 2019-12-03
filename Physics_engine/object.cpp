@@ -4,7 +4,7 @@
 
 #include <QDebug>
 #include <cmath>
-
+#include <algorithm>
 
 
 Object::Object(Engine *engine, QString shape, double mass, double sizeX, double sizeY, double velocityX, double velocityY, double restitution){
@@ -19,6 +19,7 @@ Object::Object(Engine *engine, QString shape, double mass, double sizeX, double 
 Object::Object(Engine *engine, double mass, double velocityX, double velocityY, double restitution, bool isMovingY):
     engine(engine), mass(mass), velocity(QPointF(velocityX,velocityY)), restitution(restitution), isMovingY(isMovingY)
 {
+//    setMassInversion();
     qDebug() << "Object is created.";
 }
 
@@ -35,9 +36,7 @@ void Object::positionUpdate(){
 
 Rectangle::Rectangle(Engine *engine, double mass, double sizeX, double sizeY, double velocityX, double velocityY, double restitution, bool isMovingY):
    Object(engine, mass,velocityX, velocityY, restitution, isMovingY), width(sizeX), height(sizeY)//, isMovingY(isMoving)
-{
-
-}
+{}
 
 void Rectangle::bounce(){
     bool collision =rectangleVsGround(*this);
@@ -49,9 +48,7 @@ void Rectangle::bounce(){
 
 Circle::Circle(Engine *engine, double mass, double sizeX, double sizeY, double velocityX, double velocityY, double restitution, bool isMovingY):
     Object(engine, mass,velocityX, velocityY, restitution, isMovingY), radius(sizeX)//, isMovingY(isMoving)
-{
-
-}
+{}
 
 void Circle::bounce(){
     bool collision =circleVsGround(*this);

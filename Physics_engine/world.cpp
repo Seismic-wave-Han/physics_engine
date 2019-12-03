@@ -1,6 +1,7 @@
 #include "world.h"
 #include "engine.h"
 #include "object.h"
+//#include "collision.h"
 
 #include <QTimer>
 #include <QMouseEvent>
@@ -39,12 +40,41 @@ void World::paintEvent(QPaintEvent *event){
 //        qDebug() << "radius: " << object->getRadius();
         painter.drawEllipse(QPointF(circle.position.rx(), circle.position.ry()), circle.radius, circle.radius);
     }
+//    for (auto &rectangle: rectangles){
+//        rectangle.bounce();
+//        rectangle.positionUpdate();
+////        qDebug() << rectangle.Right_bottom().ry();
+//        painter.drawRect(int(rectangle.Left_top().rx()), int(rectangle.Left_top().ry()), int(rectangle.width), int(rectangle.height)); // todo: use int spinbox, and change type of width, height to int?
+//    }
+//    size_t sizeC=circles.size();
+//    size_t sizeR=rectangles.size();
+
+//    for (size_t i=0; i<sizeC; ++i){
+////        Object *circleA = &circles[i];
+////        circleA->bounce();
+////        circleA->positionUpdate();
+//        circles[i].bounce();
+//        circles[i].positionUpdate();
+////        qDebug() << "radius: " << object->getRadius();
+////        for(size_t j=i+1; j<sizeC; ++j){
+////            Object *circleB = &circles[j];
+////            Manifold m(circleA, circleB);
+////            bool isCollided = circleVsCircle(&m);
+////            if (isCollided){
+////                positionCorrection(&m);
+////                resolveCollision(&m);
+////            }
+////        }
+//        painter.drawEllipse(QPointF(circles[i].position.rx(), circles[i].position.ry()), circles[i].getRadius(), circles[i].getRadius());
+////        painter.drawEllipse(QPointF(circleA->position.rx(), circleA->position.ry()), circleA->getRadius(), circleA->getRadius());
+//    }
     for (auto &rectangle: rectangles){
         rectangle.bounce();
         rectangle.positionUpdate();
 //        qDebug() << rectangle.Right_bottom().ry();
         painter.drawRect(int(rectangle.Left_top().rx()), int(rectangle.Left_top().ry()), int(rectangle.width), int(rectangle.height)); // todo: use int spinbox, and change type of width, height to int?
     }
+
 
 //    qDebug() << "---cycle---";
 
