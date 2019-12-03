@@ -52,14 +52,24 @@ void World::paintEvent(QPaintEvent *event){
 
     for (size_t i=0; i<sizeC; ++i){
         Object *circleA = &circles[i];
+        for (size_t i=0; i<sizeR; ++i){
+            Object *rectangleA = &rectangles[i];
+            Manifold *rc= new Manifold(rectangleA, circleA);
+            rc->updateRectangleVsCircle();
+        }
+    }
+
+    for (size_t i=0; i<sizeC; ++i){
+        Object *circleA = &circles[i];
         circleA->positionUpdate();
         circleA->bounce();
         for(size_t j=i+1; j<sizeC; ++j){
             Object *circleB = &circles[j];
-            Manifold *m= new Manifold(circleA, circleB);
-            m->updateCircleVsCircle();
+            Manifold *cc= new Manifold(circleA, circleB);
+            cc->updateCircleVsCircle();
         }
         painter.drawEllipse(QPointF(circleA->position.rx(), circleA->position.ry()), circleA->getRadius(), circleA->getRadius());
+
     }
 
     for (size_t i=0; i<sizeR; ++i){
@@ -68,12 +78,12 @@ void World::paintEvent(QPaintEvent *event){
         rectangleA->bounce();
         for(size_t j=i+1; j<sizeR; ++j){
             Object *rectangleB = &rectangles[j];
-            Manifold *m= new Manifold(rectangleA, rectangleB);
-            m->updateRectangleVsRectangle();
+            Manifold *rr= new Manifold(rectangleA, rectangleB);
+            rr->updateRectangleVsRectangle();
         }
         painter.drawRect(int(rectangleA->Left_top().rx()), int(rectangleA->Left_top().ry()), int(rectangleA->getWidth()), int(rectangleA->getHeight())); // todo: use int spinbox, and change type of width, height to int?
-    }
 
+    }
 
 //    qDebug() << "---cycle---";
 

@@ -5,6 +5,7 @@
 
 #include <QDebug>
 #include <cmath>
+#include <algorithm>
 #include <QPointF>
 
 
@@ -25,6 +26,13 @@ double Distance(const QPointF &a, const QPointF &b = {0 , 0}){
 //    if (Distance(cir1.position, cir2.position) > cir1.radius + cir2.radius) return false;
 //    return true;
 //}
+
+double Clamp(double min, double max, double value){
+    if (value<min) value=min;
+    if (value>max) value=max;
+    return value;
+}
+
 
 bool circleVsCircle( Manifold *m )
 {
@@ -80,7 +88,7 @@ bool rectangleVsRectangle( Manifold *m )
     double widthB=B->getWidth();
 
   // Calculate overlap on x axis
-    double overlapX = 0.5*(widthA+widthB) - std::abs(positionRelative.x());
+    double overlapX = 0.5*(widthA+widthB) - abs(positionRelative.x());
 
   // SAT test on x axis
     if(overlapX > 0){
@@ -88,7 +96,7 @@ bool rectangleVsRectangle( Manifold *m )
         double heightA=A->getHeight();
         double heightB=B->getHeight();
 
-        double overlapY = 0.5*(heightA+heightB) - std::abs(positionRelative.y());
+        double overlapY = 0.5*(heightA+heightB) - abs(positionRelative.y());
 
         // SAT test on y axis
         if(overlapY > 0) {
@@ -112,7 +120,58 @@ bool rectangleVsRectangle( Manifold *m )
     return false;
 }
 
+bool rectangleVsCircle(Manifold *m){
+    // Setup a couple pointers to each object
+    Object *A = m->A;
+    Object *B = m->B;
 
+    // Vector from A to B
+    QPointF positionRelative = B->position - A->position;
+
+    const int signX = (positionRelative.x() > 0) ? 1:-1;
+    const int signY = (positionRelative.y() > 0) ? 1:-1;
+
+    QPointF closest = positionRelative;
+
+    const double widthA=A->getWidth();
+    const double heightA=A->getHeight();
+
+    closest.rx() = Clamp(-0.5*widthA, 0.5*widthA, closest.x());
+    closest.ry() = Clamp(-0.5*heightA, 0.5*heightA, closest.y());
+
+    bool inside = false;
+
+    if (positionRelative==closest){
+        inside = true;
+
+    // Find closest axis
+        if(abs( positionRelative.x() ) > abs( positionRelative.y() )) closest.rx() = signX*0.5*widthA;
+        else closest.ry() = signY*0.5*heightA;
+    }
+
+    QPointF normal = positionRelative - closest;
+    double distance = Distance(normal);
+
+    const double radius=B->getRadius();
+
+    // Early out of the radius is shorter than distance to closest point and
+    // Circle not inside the AABB
+    if(distance > radius && !inside) return false;
+
+    // Avoided sqrt until we needed
+
+    // Collision normal needs to be flipped to point outside if circle was
+    // inside the AABB
+    if(inside) {
+        m->normal = -normal/distance;
+        m->penetration = radius + distance;
+    }
+    else{
+        m->normal = normal/distance;
+        m->penetration = radius - distance;
+    }
+    return true;
+}
 
 
 bool Rec_vs_cir(const Rectangle &rec, const Circle &cir){

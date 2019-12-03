@@ -73,3 +73,11 @@ void Manifold::updateRectangleVsRectangle(){
         resolveCollision(this);
     }
 }
+
+void Manifold::updateRectangleVsCircle(){
+    bool collision = rectangleVsCircle(this);
+    if (collision) {
+        positionCorrection(this);
+        resolveCollision(this);
+    }
+}

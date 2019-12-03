@@ -87,6 +87,8 @@ struct Manifold{
 
     void updateCircleVsCircle();
     void updateRectangleVsRectangle();
+    void updateRectangleVsCircle();
+
 
     Object *A;
     Object *B;
