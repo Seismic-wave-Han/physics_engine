@@ -29,6 +29,7 @@ public:
     int dt;
     int positionX;
     int positionY;
+    int screenSize = 500;
     std::vector<Circle> circles;
     std::vector<Rectangle> rectangles;
 

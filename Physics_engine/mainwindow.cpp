@@ -20,20 +20,25 @@ MainWindow::MainWindow(QWidget *parent)
     ui->frictionValue->setRange(0, 1);
     ui->massValue->setRange(0, 100);
     ui->massValue->setValue(10);
-    ui->velocityValueX->setRange(-100,100);
-    ui->velocityValueY->setRange(-100,100);
-    ui->restitutionValue->setRange(0,1);
-    ui->restitutionValue->setValue(1.0);
     ui->sizeValueX->setRange(5,100);
     ui->sizeValueY->setRange(5,100);
     ui->sizeValueX->setValue(10);
     ui->sizeValueY->setValue(10);
+    ui->velocityValueX->setRange(-100,100);
+    ui->velocityValueY->setRange(-100,100);
+    ui->restitutionValue->setRange(0,1);
+    ui->restitutionValue->setValue(1.0);
+
 
 
     // create World object
     world = new World(&engine, this);
     ui->verticalLayout->addWidget(world); // add to ui
     ui->verticalLayout->addWidget(world); // add to ui
+
+    int maxRange = 0.5*world->screenSize;
+    ui->positionValueX->setRange(-0.5*maxRange, 0.5*maxRange);
+    ui->positionValueY->setRange(-0.5*maxRange, 0.5*maxRange);
 
     // QTimer for animation
     QTimer *timer = new QTimer(this);
@@ -71,15 +76,20 @@ void MainWindow::on_setButton_clicked()
     double mass = ui->massValue->value();
     double sizeX = ui->sizeValueX->value();
     double sizeY = ui->sizeValueY->value();
-    double velocityX = ui->velocityValueX->value() ;
-    double velocityY = ui->velocityValueY->value() ;
+    QPointF size(sizeX, sizeY);
+    double positionX = ui->positionValueX->value();
+    double positionY = ui->positionValueY->value();
+    QPointF position(positionX, positionY);
+    double velocityX = ui->velocityValueX->value();
+    double velocityY = ui->velocityValueY->value();
+    QPointF velocity(velocityX, velocityY);
     double restitution = ui->restitutionValue->value();
     bool isMovingY=true;
     if (shape == "Circle"){
-        Circle circle = Circle(&engine, mass, sizeX, sizeY, velocityX, velocityY, restitution, isMovingY);
+        Circle circle = Circle(&engine, mass, sizeX, position, velocity, restitution, isMovingY);
         world->createCircleEvent(circle);
     } else if (shape == "Rectangle"){
-        Rectangle rectangle = Rectangle(&engine, mass, sizeX, sizeY, velocityX, velocityY, restitution, isMovingY);
+        Rectangle rectangle = Rectangle(&engine, mass, size, position, velocity, restitution, isMovingY);
         world->createRectEvent(rectangle);
     }
 }
@@ -93,4 +103,10 @@ void MainWindow::on_startButton_clicked()
 void MainWindow::on_stopButton_clicked()
 {
     engine.setDelta(0);
+}
+
+void MainWindow::on_resetButton_clicked()
+{
+    world->circles.clear();
+    world->rectangles.clear();
 }

@@ -38,6 +38,8 @@ private slots:
 
     void on_stopButton_clicked();
 
+    void on_resetButton_clicked();
+
 private:
     Ui::MainWindow *ui;
     Engine engine;

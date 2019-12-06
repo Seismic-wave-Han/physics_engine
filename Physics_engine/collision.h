@@ -178,7 +178,7 @@ bool rectangleVsCircle(Manifold *m){
 }
 
 bool rectangleVsGround(Rectangle &rec){
-    qreal ground=400;
+    qreal ground=250;
     if(rec.Right_bottom().y() > ground) {
         rec.position.setY( ground - 0.5*rec.height);
         if (rec.velocity.ry() < 5) {
@@ -192,7 +192,7 @@ bool rectangleVsGround(Rectangle &rec){
 }
 
 bool circleVsGround(Circle &cir){
-    qreal ground=400;
+    qreal ground=250;
     if((cir.position.y()+cir.radius) > ground) {
         cir.position.setY( ground - cir.radius);
         if(cir.velocity.ry() < 5){

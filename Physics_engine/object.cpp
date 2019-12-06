@@ -7,17 +7,8 @@
 #include <algorithm>
 
 
-Object::Object(Engine *engine, QString shape, double mass, double sizeX, double sizeY, double velocityX, double velocityY, double restitution){
-    if (shape == "Rectangle"){
-        Rectangle(engine, mass, sizeX, sizeY, velocityX, velocityY, restitution, true);
-    }
-    else {
-        Circle(engine, mass, sizeX, sizeY, velocityX, velocityY, restitution, true);
-    }
-}
-
-Object::Object(Engine *engine, double mass, double velocityX, double velocityY, double restitution, bool isMovingY):
-    engine(engine), mass(mass), velocity(QPointF(velocityX,velocityY)), restitution(restitution), isMovingY(isMovingY)
+Object::Object(Engine *engine, double mass, QPointF position, QPointF velocity, double restitution, bool isMovingY):
+    engine(engine), mass(mass), position(position), velocity(velocity), restitution(restitution), isMovingY(isMovingY)
 {
     setMassInversion();
     qDebug() << "Object is created.";
@@ -34,8 +25,8 @@ void Object::positionUpdate(){
 //    qDebug() << position.rx()<< ", "<< position.ry();
 }
 
-Rectangle::Rectangle(Engine *engine, double mass, double sizeX, double sizeY, double velocityX, double velocityY, double restitution, bool isMovingY):
-   Object(engine, mass,velocityX, velocityY, restitution, isMovingY), width(sizeX), height(sizeY)//, isMovingY(isMoving)
+Rectangle::Rectangle(Engine *engine, double mass, QPointF size, QPointF position, QPointF velocity, double restitution, bool isMovingY):
+   Object(engine, mass, position, velocity, restitution, isMovingY), width(size.x()), height(size.y())//, isMovingY(isMoving)
 {}
 
 void Rectangle::bounce(){
@@ -46,8 +37,8 @@ void Rectangle::bounce(){
     }
 }
 
-Circle::Circle(Engine *engine, double mass, double sizeX, double sizeY, double velocityX, double velocityY, double restitution, bool isMovingY):
-    Object(engine, mass,velocityX, velocityY, restitution, isMovingY), radius(sizeX)//, isMovingY(isMoving)
+Circle::Circle(Engine *engine, double mass, double radius, QPointF position, QPointF velocity, double restitution, bool isMovingY):
+    Object(engine, mass, position, velocity, restitution, isMovingY), radius(radius)//, isMovingY(isMoving)
 {}
 
 void Circle::bounce(){

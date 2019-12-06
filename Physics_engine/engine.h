@@ -33,8 +33,5 @@ private:
     double delta=0.1;
     double g = 9.8;
     double mu = 0;
-    std::vector<std::vector<bool>> ObjectvsObject;
-    std::vector<bool> ObjectvsGround;
-
 };
 #endif // ENGINE_H

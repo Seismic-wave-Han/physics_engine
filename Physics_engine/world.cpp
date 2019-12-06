@@ -15,7 +15,8 @@ World::World(Engine *engine, QWidget *parent):
     QOpenGLWidget(parent), engine(engine)
 {
     dt = 0;
-    setFixedSize(500,500);
+    screenSize = 500;
+    setFixedSize(screenSize, screenSize);
     setAutoFillBackground(false);
 }
 
@@ -34,7 +35,7 @@ void World::paintEvent(QPaintEvent *event){
 //    painter.save();
 //    painter.setBrush(QBrush(Qt::red));
     painter.setPen(QPen(Qt::black));
-    painter.translate(QPointF(100,100));
+    painter.translate(QPointF(0.5*screenSize, 0.5*screenSize));
 //    for (auto &circle: circles){
 //        circle.bounce();
 //        circle.positionUpdate();
