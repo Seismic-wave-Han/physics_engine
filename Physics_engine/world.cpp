@@ -31,9 +31,9 @@ void World::paintEvent(QPaintEvent *event){
     painter.setRenderHint(QPainter::Antialiasing);
 //    engine->paint(&painter, event);
     painter.fillRect(event->rect(), QBrush(Qt::white));
-    painter.save();
-    painter.setBrush(QBrush(Qt::red));
-    painter.setPen(QPen(Qt::blue));
+//    painter.save();
+//    painter.setBrush(QBrush(Qt::red));
+    painter.setPen(QPen(Qt::black));
     painter.translate(QPointF(100,100));
 //    for (auto &circle: circles){
 //        circle.bounce();
@@ -68,6 +68,11 @@ void World::paintEvent(QPaintEvent *event){
             Manifold *cc= new Manifold(circleA, circleB);
             cc->updateCircleVsCircle();
         }
+        double massNormalized = circleA->mass / 100;
+        int opacity = static_cast<int>(255* massNormalized);
+        int redness = static_cast<int>(255* circleA->restitution);
+        int blueness = static_cast<int>(255* (1-circleA->restitution));
+        painter.setBrush(QColor(redness, 0, blueness, opacity));
         painter.drawEllipse(QPointF(circleA->position.rx(), circleA->position.ry()), circleA->getRadius(), circleA->getRadius());
 
     }
@@ -81,6 +86,11 @@ void World::paintEvent(QPaintEvent *event){
             Manifold *rr= new Manifold(rectangleA, rectangleB);
             rr->updateRectangleVsRectangle();
         }
+        double massNormalized = rectangleA->mass / 100;
+        int opacity = static_cast<int>(255* massNormalized);
+        int redness = static_cast<int>(255* rectangleA->restitution);
+        int blueness = static_cast<int>(255* (1-rectangleA->restitution));
+        painter.setBrush(QColor(redness, 0, blueness, opacity));
         painter.drawRect(int(rectangleA->Left_top().rx()), int(rectangleA->Left_top().ry()), int(rectangleA->getWidth()), int(rectangleA->getHeight())); // todo: use int spinbox, and change type of width, height to int?
 
     }

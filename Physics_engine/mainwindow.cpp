@@ -18,26 +18,28 @@ MainWindow::MainWindow(QWidget *parent)
     ui->gravityValue->setRange(0, 100);
     ui->gravityValue->setValue(9.8);
     ui->frictionValue->setRange(0, 1);
+    ui->massValue->setRange(0, 100);
+    ui->massValue->setValue(10);
     ui->velocityValueX->setRange(-100,100);
     ui->velocityValueY->setRange(-100,100);
     ui->restitutionValue->setRange(0,1);
     ui->restitutionValue->setValue(1.0);
-    ui->sizeValueX->setRange(1,100);
-    ui->sizeValueY->setRange(1,100);
-    ui->sizeValueX->setValue(5);
-    ui->sizeValueY->setValue(5);
-    ui->massValue->setValue(10);
+    ui->sizeValueX->setRange(5,100);
+    ui->sizeValueY->setRange(5,100);
+    ui->sizeValueX->setValue(10);
+    ui->sizeValueY->setValue(10);
 
 
     // create World object
     world = new World(&engine, this);
-    ui->verticalLayout->addWidget(world, 0, 0); // add to ui
+    ui->verticalLayout->addWidget(world); // add to ui
+    ui->verticalLayout->addWidget(world); // add to ui
 
     // QTimer for animation
     QTimer *timer = new QTimer(this);
     connect(timer, &QTimer::timeout, world, &World::animate);
     timer->start(1);
-}
+}    
 
 // destructor
 MainWindow::~MainWindow()

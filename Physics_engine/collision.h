@@ -82,6 +82,8 @@ bool rectangleVsRectangle( Manifold *m )
 
   // Vector from A to B
     QPointF positionRelative = B->position - A->position;
+    QPointF velocityRelative = B->velocity - A->velocity;
+
 
   // Calculate half extents along x axis for each object
     double widthA=A->getWidth();
@@ -101,16 +103,18 @@ bool rectangleVsRectangle( Manifold *m )
         // SAT test on y axis
         if(overlapY > 0) {
           // Find out which axis is axis of least penetration
-            if(overlapX > overlapY) {
+            if(overlapX < overlapY) {
             // Point towards B knowing that n points from A to B
-                if(positionRelative.x() < 0) { m->normal = QPointF( -1, 0 );}
+//                if(positionRelative.x() < 0) { m->normal = QPointF( -1, 0 );}
+                if(velocityRelative.x() > 0) { m->normal = QPointF( -1, 0 );}
                 else { m->normal = QPointF( 1, 0 );}
             m->penetration = overlapX;
             return true;
             }
             else {
             // Point toward B knowing that n points from A to B
-                if(positionRelative.y() < 0) {m->normal = QPointF( 0, -1 );}
+//                if(positionRelative.y() < 0) {m->normal = QPointF( 0, -1 );}
+                if(velocityRelative.y() > 0) {m->normal = QPointF( 0, -1 );}
                 else { m->normal = QPointF( 0, 1 );}
             m->penetration = overlapY;
             return true;
@@ -170,21 +174,6 @@ bool rectangleVsCircle(Manifold *m){
         m->normal = normal/distance;
         m->penetration = radius - distance;
     }
-    return true;
-}
-
-
-bool Rec_vs_cir(const Rectangle &rec, const Circle &cir){
-    QPointF diff(std::abs(cir.position.x() - rec.position.x()),
-            std::abs(cir.position.y() - rec.position.y()));
-
-    QPointF margin;
-    margin.rx() = diff.x() - 0.5 * rec.width;
-    margin.ry() = diff.y() - 0.5 * rec.height;
-
-    if (margin.x() > cir.radius or margin.y() > cir.radius) return false;
-    if (margin.x() > 0 and margin.y() > 0 and Distance(margin) > cir.radius) return false;
-
     return true;
 }
 
