@@ -7,8 +7,8 @@
 #include <algorithm>
 
 
-Object::Object(Engine *engine, double mass, QPointF position, QPointF velocity, double restitution, bool isMovingY):
-    engine(engine), mass(mass), position(position), velocity(velocity), restitution(restitution), isMovingY(isMovingY)
+Object::Object(Engine *engine, double mass, QPointF position, QPointF velocity, double restitution, bool isMovingY)://, bool isFixed):
+    engine(engine), position(position), velocity(velocity), mass(mass), restitution(restitution), isMovingY(isMovingY)//, isFixed(isFixed)
 {
     setMassInversion();
     qDebug() << "Object is created.";

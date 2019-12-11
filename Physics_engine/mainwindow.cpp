@@ -29,16 +29,17 @@ MainWindow::MainWindow(QWidget *parent)
     ui->restitutionValue->setRange(0,1);
     ui->restitutionValue->setValue(1.0);
 
-
-
     // create World object
     world = new World(&engine, this);
     ui->verticalLayout->addWidget(world); // add to ui
     ui->verticalLayout->addWidget(world); // add to ui
 
-    int maxRange = 0.5*world->screenSize;
+    double maxRange = 0.5*world->screenSize;
     ui->positionValueX->setRange(-0.5*maxRange, 0.5*maxRange);
     ui->positionValueY->setRange(-0.5*maxRange, 0.5*maxRange);
+
+//    connect(world, &World::shoot, this, &MainWindow::shooting);
+
 
     // QTimer for animation
     QTimer *timer = new QTimer(this);
@@ -69,7 +70,7 @@ void MainWindow::on_defaultButton_clicked()
     engine.setFriction(0);
 }
 
-
+// todo: set 말고 다른 버튼하나 만들기.
 void MainWindow::on_setButton_clicked()
 {
     QString shape = ui->shapeComboBox->currentText();
@@ -85,14 +86,13 @@ void MainWindow::on_setButton_clicked()
     QPointF velocity(velocityX, velocityY);
     double restitution = ui->restitutionValue->value();
     bool isMovingY=true;
-    if (shape == "Circle"){
-        Circle circle = Circle(&engine, mass, sizeX, position, velocity, restitution, isMovingY);
-        world->createCircleEvent(circle);
-    } else if (shape == "Rectangle"){
-        Rectangle rectangle = Rectangle(&engine, mass, size, position, velocity, restitution, isMovingY);
-        world->createRectEvent(rectangle);
-    }
+
+    world->setParameters(shape, mass, size, restitution, isMovingY);
 }
+
+//void MainWindow::shooting(double x1, double y1, double x2, double y2){
+//    qDebug() << "shoot!!";
+//}
 
 void MainWindow::on_startButton_clicked()
 {
@@ -103,6 +103,7 @@ void MainWindow::on_startButton_clicked()
 void MainWindow::on_stopButton_clicked()
 {
     engine.setDelta(0);
+    qDebug()<< "stop!";
 }
 
 void MainWindow::on_resetButton_clicked()
@@ -110,3 +111,4 @@ void MainWindow::on_resetButton_clicked()
     world->circles.clear();
     world->rectangles.clear();
 }
+

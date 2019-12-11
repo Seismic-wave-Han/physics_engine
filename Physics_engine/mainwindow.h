@@ -28,6 +28,7 @@ public:
     ~MainWindow();
 
 private slots:
+//    void shooting(double x1, double y1, double x2, double y2);
     void on_applyButton_clicked();
     void on_defaultButton_clicked();
 //    void positionXShow();

@@ -14,6 +14,7 @@
 #include <QtWidgets/QComboBox>
 #include <QtWidgets/QDoubleSpinBox>
 #include <QtWidgets/QGridLayout>
+#include <QtWidgets/QLCDNumber>
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QMainWindow>
 #include <QtWidgets/QMenuBar>
@@ -35,12 +36,12 @@ public:
     QWidget *gridLayoutWidget;
     QGridLayout *gridLayoutTop;
     QLabel *frictionLabel;
-    QLabel *gravityLabel;
-    QLabel *propertiesLabel;
-    QPushButton *applyButton;
     QPushButton *defaultButton;
+    QPushButton *applyButton;
     QDoubleSpinBox *gravityValue;
+    QLabel *propertiesLabel;
     QDoubleSpinBox *frictionValue;
+    QLabel *gravityLabel;
     QWidget *gridLayoutWidget_2;
     QGridLayout *gridLayoutBottom;
     QLabel *objectLabel;
@@ -63,6 +64,7 @@ public:
     QDoubleSpinBox *positionValueX;
     QDoubleSpinBox *positionValueY;
     QPushButton *resetButton;
+    QLCDNumber *lcdNumber;
     QMenuBar *menubar;
     QStatusBar *statusbar;
 
@@ -100,35 +102,35 @@ public:
 
         gridLayoutTop->addWidget(frictionLabel, 2, 0, 1, 1);
 
-        gravityLabel = new QLabel(gridLayoutWidget);
-        gravityLabel->setObjectName(QString::fromUtf8("gravityLabel"));
+        defaultButton = new QPushButton(gridLayoutWidget);
+        defaultButton->setObjectName(QString::fromUtf8("defaultButton"));
 
-        gridLayoutTop->addWidget(gravityLabel, 1, 0, 1, 1);
-
-        propertiesLabel = new QLabel(gridLayoutWidget);
-        propertiesLabel->setObjectName(QString::fromUtf8("propertiesLabel"));
-
-        gridLayoutTop->addWidget(propertiesLabel, 0, 0, 1, 1);
+        gridLayoutTop->addWidget(defaultButton, 3, 0, 1, 1);
 
         applyButton = new QPushButton(gridLayoutWidget);
         applyButton->setObjectName(QString::fromUtf8("applyButton"));
 
         gridLayoutTop->addWidget(applyButton, 3, 1, 1, 1);
 
-        defaultButton = new QPushButton(gridLayoutWidget);
-        defaultButton->setObjectName(QString::fromUtf8("defaultButton"));
-
-        gridLayoutTop->addWidget(defaultButton, 3, 0, 1, 1);
-
         gravityValue = new QDoubleSpinBox(gridLayoutWidget);
         gravityValue->setObjectName(QString::fromUtf8("gravityValue"));
 
         gridLayoutTop->addWidget(gravityValue, 1, 1, 1, 1);
 
+        propertiesLabel = new QLabel(gridLayoutWidget);
+        propertiesLabel->setObjectName(QString::fromUtf8("propertiesLabel"));
+
+        gridLayoutTop->addWidget(propertiesLabel, 0, 0, 1, 1);
+
         frictionValue = new QDoubleSpinBox(gridLayoutWidget);
         frictionValue->setObjectName(QString::fromUtf8("frictionValue"));
 
         gridLayoutTop->addWidget(frictionValue, 2, 1, 1, 1);
+
+        gravityLabel = new QLabel(gridLayoutWidget);
+        gravityLabel->setObjectName(QString::fromUtf8("gravityLabel"));
+
+        gridLayoutTop->addWidget(gravityLabel, 1, 0, 1, 1);
 
         gridLayoutWidget_2 = new QWidget(centralwidget);
         gridLayoutWidget_2->setObjectName(QString::fromUtf8("gridLayoutWidget_2"));
@@ -235,7 +237,10 @@ public:
 
         resetButton = new QPushButton(centralwidget);
         resetButton->setObjectName(QString::fromUtf8("resetButton"));
-        resetButton->setGeometry(QRect(760, 490, 112, 32));
+        resetButton->setGeometry(QRect(760, 520, 112, 32));
+        lcdNumber = new QLCDNumber(centralwidget);
+        lcdNumber->setObjectName(QString::fromUtf8("lcdNumber"));
+        lcdNumber->setGeometry(QRect(740, 10, 71, 21));
         MainWindow->setCentralWidget(centralwidget);
         menubar = new QMenuBar(MainWindow);
         menubar->setObjectName(QString::fromUtf8("menubar"));
@@ -256,10 +261,10 @@ public:
         titleLabel->setText(QApplication::translate("MainWindow", "Newton Physics engine ", nullptr));
         versionLabel->setText(QApplication::translate("MainWindow", "version:", nullptr));
         frictionLabel->setText(QApplication::translate("MainWindow", "mu", nullptr));
-        gravityLabel->setText(QApplication::translate("MainWindow", "gravity", nullptr));
-        propertiesLabel->setText(QApplication::translate("MainWindow", "Properties", nullptr));
-        applyButton->setText(QApplication::translate("MainWindow", "apply", nullptr));
         defaultButton->setText(QApplication::translate("MainWindow", "default", nullptr));
+        applyButton->setText(QApplication::translate("MainWindow", "apply", nullptr));
+        propertiesLabel->setText(QApplication::translate("MainWindow", "Properties", nullptr));
+        gravityLabel->setText(QApplication::translate("MainWindow", "gravity", nullptr));
         objectLabel->setText(QApplication::translate("MainWindow", "Object", nullptr));
         setButton->setText(QApplication::translate("MainWindow", "set", nullptr));
         massLabel->setText(QApplication::translate("MainWindow", "mass", nullptr));

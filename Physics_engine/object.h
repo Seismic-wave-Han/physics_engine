@@ -14,6 +14,7 @@ class Object
 {
 public:
     Object(Engine *engine, double mass, QPointF position, QPointF velocity, double restitution=0.95, bool isMovingY=true);
+    //, bool isFixed=false);
 
     virtual ~Object(){}
 
@@ -45,7 +46,8 @@ public:
     double mass = 10;
     double massInv;
     double restitution = 0.95;
-    bool isMovingY=true;
+    bool isMovingY = true;
+//    bool isFixed = false;
 };
 
 class Rectangle : public Object{

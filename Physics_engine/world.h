@@ -9,29 +9,50 @@ class Engine;
 class Object;
 class Circle;
 class Rectangle;
+
 class World : public QOpenGLWidget
 {
-signals:
-    void mousePressed( const QPoint& );
+//    Q_OBJECT
+public:
+//    void mouseClicked(QMouseEvent * event);
+//    void clicked(){
+//        emit mouseReleaseEvent();
+//    }
     void positionXChanged(int positionX);
     void positionYChanged(int positionY);
 public:
     World(Engine *engine, QWidget *parent);
     void animate();
-    void paintEvent(QPaintEvent *event);
+    void clicked();
+    void paintEvent(QPaintEvent *event) override;
     void createCircleEvent(Circle circle);
     void createRectEvent(Rectangle rectangle);
+    //todo: 소켓을 만들어 같이 옮기기
+    void setParameters(QString shape, double mass, QPointF size, double restitution, bool isMovingY);
 
-private slots:
-    void mousePressEvent(QMouseEvent * event);
+signals:
+//    void shoot(double x1, double y1, double x2, double y2);
+
 public:
     Engine *engine;
-    int dt;
-    int positionX;
-    int positionY;
+    int dt=0;
+    QPointF pressPos={0,0};
+    QPointF releasePos={0,0};
     int screenSize = 500;
+    QString shape="Circle";
+    double mass=10;
+    QPointF size={10,10};
+    double restitution = 1.0;
+    bool isMovingY = true;
     std::vector<Circle> circles;
     std::vector<Rectangle> rectangles;
+
+
+    // QWidget interface
+protected:
+    void mousePressEvent(QMouseEvent *event) override;
+    void mouseReleaseEvent(QMouseEvent *event) override;
+
 
 };
 

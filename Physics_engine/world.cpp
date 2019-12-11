@@ -10,6 +10,7 @@
 #include <QPen>
 #include <QDebug>
 
+#include <iostream> // delete after testing
 
 World::World(Engine *engine, QWidget *parent):
     QOpenGLWidget(parent), engine(engine)
@@ -101,17 +102,27 @@ void World::paintEvent(QPaintEvent *event){
     painter.end();
 }
 
-void World::mousePressEvent(QMouseEvent *event)
-{
-    positionX=  event->x();
-    positionY = event->y();
-    QString x = QString::number(event->x());
-    QString y = QString::number(event->y());
-    qDebug() << x << "," << y;
-//    emit mousePressed(event->pos());
-//    emit positionXChanged(positionX);
-//    emit positionYChanged(positionY);
+//void World::mousePressEvent(QMouseEvent *event)
+//{
+//    pressX=  event->x()-0.5*screenSize;
+//    pressY = event->y()-0.5*screenSize;
+//    qDebug() << pressX << "," << pressY;
+//}
 
+
+
+//void World::mouseReleased()
+//{
+//    QMouseEvent *event;
+//    mouseReleaseEvent(event);
+
+////    releaseX =  event->x()-0.5*screenSize;
+////    releaseY = event->y()-0.5*screenSize;
+//    qDebug() << releaseX << "," << releaseY;
+//}
+
+void World::clicked(){
+//    emit mouseReleaseEvent;
 }
 
 void World::createCircleEvent(Circle circle){
@@ -121,3 +132,40 @@ void World::createCircleEvent(Circle circle){
 void World::createRectEvent(Rectangle rectangle){
     rectangles.push_back(rectangle);
 }
+
+
+void World::mousePressEvent(QMouseEvent *event)
+{
+    pressPos = event->pos();
+    QPointF correctionFactor = {0.5*screenSize, 0.5*screenSize};
+    pressPos = pressPos - correctionFactor;
+
+}
+
+void World::mouseReleaseEvent(QMouseEvent *event)
+{
+    releasePos = event->pos();
+    QPointF correctionFactor = {0.5*screenSize, 0.5*screenSize};
+    releasePos = releasePos - correctionFactor;
+
+    QPointF mouseMovedDistance = pressPos-releasePos;
+
+//    shoot(pressX, pressY, releaseX, releaseY);
+    if (shape == "Circle"){
+        Circle circle = Circle(engine, mass, size.x(), releasePos, mouseMovedDistance, restitution, isMovingY);
+        createCircleEvent(circle);
+    } else if (shape == "Rectangle"){
+        Rectangle rectangle = Rectangle(engine, mass, size, releasePos, mouseMovedDistance, restitution, isMovingY);
+        createRectEvent(rectangle);
+    }
+}
+
+void World::setParameters(QString shape, double mass, QPointF size, double restitution, bool isMovingY)
+{
+    this->shape = shape;
+    this->mass =mass;
+    this->size = size;
+    this->restitution = restitution;
+    this->isMovingY = isMovingY;
+}
+
