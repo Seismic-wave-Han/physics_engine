@@ -46,6 +46,7 @@ public:
     bool isMovingY = true;
     std::vector<Circle> circles;
     std::vector<Rectangle> rectangles;
+    std::map<QString, Rectangle> background;
 
 
     // QWidget interface

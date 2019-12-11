@@ -31,26 +31,66 @@ void World::paintEvent(QPaintEvent *event){
     QPainter painter;
     painter.begin(this);
     painter.setRenderHint(QPainter::Antialiasing);
-//    engine->paint(&painter, event);
+
     painter.fillRect(event->rect(), QBrush(Qt::white));
-//    painter.save();
-//    painter.setBrush(QBrush(Qt::red));
+
     painter.setPen(QPen(Qt::black));
     painter.translate(QPointF(0.5*screenSize, 0.5*screenSize));
-//    for (auto &circle: circles){
-//        circle.bounce();
-//        circle.positionUpdate();
-////        qDebug() << "radius: " << object->getRadius();
-//        painter.drawEllipse(QPointF(circle.position.rx(), circle.position.ry()), circle.radius, circle.radius);
-//    }
-//    for (auto &rectangle: rectangles){
-//        rectangle.bounce();
-//        rectangle.positionUpdate();
-////        qDebug() << rectangle.Right_bottom().ry();
-//        painter.drawRect(int(rectangle.Left_top().rx()), int(rectangle.Left_top().ry()), int(rectangle.width), int(rectangle.height)); // todo: use int spinbox, and change type of width, height to int?
-//    }
+
     size_t sizeC=circles.size();
     size_t sizeR=rectangles.size();
+    size_t sizeB=background.size();
+
+    for (auto iter=background.begin(); iter!=background.end(); iter++){
+        Object *backObject = &iter->second;
+        painter.drawRect(int(backObject->Left_top().rx()), int(backObject->Left_top().ry()), int(backObject->getWidth()), int(backObject->getHeight()));
+
+
+        for (size_t i=0; i<sizeC; ++i){
+            Object *circleA = &circles[i];
+//            circleA->positionUpdate();
+    //        circleA->bounce();
+            Manifold *bc= new Manifold(backObject, circleA);
+            bc->updateRectangleVsCircle();
+
+            for(size_t j=i+1; j<sizeC; ++j){
+                Object *circleB = &circles[j];
+                Manifold *cc= new Manifold(circleA, circleB);
+                cc->updateCircleVsCircle();
+            }
+            double massNormalized = circleA->mass / 100;
+            int opacity = static_cast<int>(255* massNormalized);
+            int redness = static_cast<int>(255* circleA->restitution);
+            int blueness = static_cast<int>(255* (1-circleA->restitution));
+            painter.setBrush(QColor(redness, 0, blueness, opacity));
+//            painter.drawEllipse(QPointF(circleA->position.rx(), circleA->position.ry()), circleA->getRadius(), circleA->getRadius());
+
+        }
+
+
+        for (size_t i=0; i<sizeR; ++i){
+            Object *rectangleA = &rectangles[i];
+//            rectangleA->positionUpdate();
+    //        rectangleA->bounce();
+//            for (auto iter=background.begin(); iter!=background.end(); iter++){
+//                Object *backObject = &iter->second;
+                Manifold *br= new Manifold(backObject, rectangleA);
+                br->updateRectangleVsRectangle();
+//            }
+            for(size_t j=i+1; j<sizeR; ++j){
+                Object *rectangleB = &rectangles[j];
+                Manifold *rr= new Manifold(rectangleA, rectangleB);
+                rr->updateRectangleVsRectangle();
+            }
+            double massNormalized = rectangleA->mass / 100;
+            int opacity = static_cast<int>(255* massNormalized);
+            int redness = static_cast<int>(255* rectangleA->restitution);
+            int blueness = static_cast<int>(255* (1-rectangleA->restitution));
+            painter.setBrush(QColor(redness, 0, blueness, opacity));
+//            painter.drawRect(int(rectangleA->Left_top().rx()), int(rectangleA->Left_top().ry()), int(rectangleA->getWidth()), int(rectangleA->getHeight())); // todo: use int spinbox, and change type of width, height to int?
+
+        }
+    }
 
     for (size_t i=0; i<sizeC; ++i){
         Object *circleA = &circles[i];
@@ -58,43 +98,11 @@ void World::paintEvent(QPaintEvent *event){
             Object *rectangleA = &rectangles[i];
             Manifold *rc= new Manifold(rectangleA, circleA);
             rc->updateRectangleVsCircle();
+            rectangleA->positionUpdate();
+            painter.drawRect(int(rectangleA->Left_top().rx()), int(rectangleA->Left_top().ry()), int(rectangleA->getWidth()), int(rectangleA->getHeight())); // todo: use int spinbox, and change type of width, height to int?
         }
-    }
-
-    for (size_t i=0; i<sizeC; ++i){
-        Object *circleA = &circles[i];
         circleA->positionUpdate();
-        circleA->bounce();
-        for(size_t j=i+1; j<sizeC; ++j){
-            Object *circleB = &circles[j];
-            Manifold *cc= new Manifold(circleA, circleB);
-            cc->updateCircleVsCircle();
-        }
-        double massNormalized = circleA->mass / 100;
-        int opacity = static_cast<int>(255* massNormalized);
-        int redness = static_cast<int>(255* circleA->restitution);
-        int blueness = static_cast<int>(255* (1-circleA->restitution));
-        painter.setBrush(QColor(redness, 0, blueness, opacity));
         painter.drawEllipse(QPointF(circleA->position.rx(), circleA->position.ry()), circleA->getRadius(), circleA->getRadius());
-
-    }
-
-    for (size_t i=0; i<sizeR; ++i){
-        Object *rectangleA = &rectangles[i];
-        rectangleA->positionUpdate();
-        rectangleA->bounce();
-        for(size_t j=i+1; j<sizeR; ++j){
-            Object *rectangleB = &rectangles[j];
-            Manifold *rr= new Manifold(rectangleA, rectangleB);
-            rr->updateRectangleVsRectangle();
-        }
-        double massNormalized = rectangleA->mass / 100;
-        int opacity = static_cast<int>(255* massNormalized);
-        int redness = static_cast<int>(255* rectangleA->restitution);
-        int blueness = static_cast<int>(255* (1-rectangleA->restitution));
-        painter.setBrush(QColor(redness, 0, blueness, opacity));
-        painter.drawRect(int(rectangleA->Left_top().rx()), int(rectangleA->Left_top().ry()), int(rectangleA->getWidth()), int(rectangleA->getHeight())); // todo: use int spinbox, and change type of width, height to int?
-
     }
 
 //    qDebug() << "---cycle---";
@@ -114,7 +122,6 @@ void World::createCircleEvent(Circle circle){
 void World::createRectEvent(Rectangle rectangle){
     rectangles.push_back(rectangle);
 }
-
 
 void World::mousePressEvent(QMouseEvent *event)
 {

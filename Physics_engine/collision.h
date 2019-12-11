@@ -33,6 +33,16 @@ double Clamp(double min, double max, double value){
     return value;
 }
 
+//QPointF velocityDamper(QPointF velocity){
+//    QPointF damped;
+//    double focus = 5;
+//    double rate = 1.02;
+//    const int signX = (velocity.x() > 0) ? 1:-1;
+//    const int signY = (velocity.y() > 0) ? 1:-1;
+//    damped.setX(velocity.rx());
+//    damped.setY(signY*std::sqrt(std::abs(velocity.ry()*velocity.ry()+focus))*rate);
+//    return damped;
+//}
 
 bool circleVsCircle( Manifold *m )
 {
@@ -205,7 +215,7 @@ bool circleVsGround(Circle &cir){
 }
 
 void positionCorrection(Manifold *m){
-    const double percent = 0.8; // usually 20% to 80%
+    const double percent = 0.5; // usually 20% to 80%
     const double  slop = 0.01; // usually 0.01 to 0.1
     Object *A=m->A;
     Object *B=m->B;
@@ -229,13 +239,15 @@ void resolveCollision(Manifold *m){
     if(velocityDotNormal > 0) return;
 
     // Calculate restitution
-    double e = std::min( A->restitution, B->restitution);
+    double e = std::min(std::min( A->restitution, B->restitution),0.98);
 
     // Calculate impulse scalar
     double j = -(1 + e) * velocityDotNormal / (A->massInv + B->massInv);
 
     // Apply impulse
     QPointF impulse = j * m->normal;
+
+
     A->velocity -= A->massInv * impulse;
     B->velocity += B->massInv * impulse;
 }

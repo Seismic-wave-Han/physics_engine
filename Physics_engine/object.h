@@ -15,7 +15,7 @@ class Object
 public:
     Object(Engine *engine, double mass, QPointF position, QPointF velocity, double restitution=0.95, bool isMovingY=true);
     //, bool isFixed=false);
-    Object(Engine *engine, QPointF position, bool isFixed=true, double mass=0, QPointF velocity={0,0}, double restitution=0.95, bool isMovingY=false);
+    Object(Engine *engine, QPointF position, bool isFixed=true, double mass=0, QPointF velocity={0,0}, double restitution=1.0, bool isMovingY=false);
 
     virtual ~Object(){}
 

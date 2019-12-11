@@ -41,6 +41,14 @@ private slots:
 
     void on_resetButton_clicked();
 
+    void on_groundCheckBox_stateChanged(int arg1);
+
+    void on_rightWallCheckBox_stateChanged(int arg1);
+
+    void on_leftWallCheckBox_stateChanged(int arg1);
+
+    void on_roofCheckBox_stateChanged(int arg1);
+
 private:
     Ui::MainWindow *ui;
     Engine engine;

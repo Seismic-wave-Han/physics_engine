@@ -37,11 +37,10 @@ MainWindow::MainWindow(QWidget *parent)
     double maxRange = 0.5*world->screenSize;
     ui->positionValueX->setRange(-0.5*maxRange, 0.5*maxRange);
     ui->positionValueY->setRange(-0.5*maxRange, 0.5*maxRange);
+    ui->groundCheckBox->setChecked(true);
 
-//    connect(world, &World::shoot, this, &MainWindow::shooting);
-
-    Rectangle fixedObject1 = Rectangle(&engine, true, {10, 10}, {30, 30});
-    world->createRectEvent(fixedObject1);
+    Rectangle baseObject = Rectangle(&engine, true, {0, 0}, {1000,1000});
+    world->background.insert(std::make_pair("base", baseObject));
 
     // QTimer for animation
     QTimer *timer = new QTimer(this);
@@ -114,3 +113,47 @@ void MainWindow::on_resetButton_clicked()
     world->rectangles.clear();
 }
 
+
+void MainWindow::on_groundCheckBox_stateChanged(int arg1)
+{
+    double maxSize = world->screenSize;
+    if (arg1){
+        Rectangle ground = Rectangle(&engine, true, {maxSize, maxSize}, {0.0, maxSize});
+        world->background.insert(std::make_pair("ground", ground));
+    } else {
+        world->background.erase("ground");
+    }
+}
+
+void MainWindow::on_rightWallCheckBox_stateChanged(int arg1)
+{
+    double maxSize = world->screenSize;
+    if (arg1){
+        Rectangle rightWall = Rectangle(&engine, true, {maxSize, maxSize}, {maxSize, 0.0});
+        world->background.insert(std::make_pair("right wall", rightWall));
+    } else {
+        world->background.erase("right wall");
+    }
+}
+
+void MainWindow::on_leftWallCheckBox_stateChanged(int arg1)
+{
+    double maxSize = world->screenSize;
+    if (arg1){
+        Rectangle leftWall = Rectangle(&engine, true, {maxSize, maxSize}, {-maxSize, 0.0});
+        world->background.insert(std::make_pair("left wall", leftWall));
+    } else {
+        world->background.erase("left wall");
+    }
+}
+
+void MainWindow::on_roofCheckBox_stateChanged(int arg1)
+{
+    double maxSize = world->screenSize;
+    if (arg1){
+        Rectangle roof = Rectangle(&engine, true, {maxSize, maxSize}, {0.0, -maxSize});
+        world->background.insert(std::make_pair("roof", roof));
+    } else {
+        world->background.erase("roof");
+    }
+}

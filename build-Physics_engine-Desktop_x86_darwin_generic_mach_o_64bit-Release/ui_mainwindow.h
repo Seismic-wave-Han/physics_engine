@@ -11,6 +11,7 @@
 
 #include <QtCore/QVariant>
 #include <QtWidgets/QApplication>
+#include <QtWidgets/QCheckBox>
 #include <QtWidgets/QComboBox>
 #include <QtWidgets/QDoubleSpinBox>
 #include <QtWidgets/QGridLayout>
@@ -65,6 +66,10 @@ public:
     QDoubleSpinBox *positionValueY;
     QPushButton *resetButton;
     QLCDNumber *lcdNumber;
+    QCheckBox *leftWallCheckBox;
+    QCheckBox *rightWallCheckBox;
+    QCheckBox *roofCheckBox;
+    QCheckBox *groundCheckBox;
     QMenuBar *menubar;
     QStatusBar *statusbar;
 
@@ -72,12 +77,12 @@ public:
     {
         if (MainWindow->objectName().isEmpty())
             MainWindow->setObjectName(QString::fromUtf8("MainWindow"));
-        MainWindow->resize(896, 704);
+        MainWindow->resize(936, 704);
         centralwidget = new QWidget(MainWindow);
         centralwidget->setObjectName(QString::fromUtf8("centralwidget"));
         verticalLayoutWidget_2 = new QWidget(centralwidget);
         verticalLayoutWidget_2->setObjectName(QString::fromUtf8("verticalLayoutWidget_2"));
-        verticalLayoutWidget_2->setGeometry(QRect(9, 10, 701, 571));
+        verticalLayoutWidget_2->setGeometry(QRect(30, 10, 701, 571));
         verticalLayout = new QVBoxLayout(verticalLayoutWidget_2);
         verticalLayout->setObjectName(QString::fromUtf8("verticalLayout"));
         verticalLayout->setContentsMargins(0, 0, 0, 0);
@@ -93,7 +98,7 @@ public:
 
         gridLayoutWidget = new QWidget(centralwidget);
         gridLayoutWidget->setObjectName(QString::fromUtf8("gridLayoutWidget"));
-        gridLayoutWidget->setGeometry(QRect(570, 40, 251, 151));
+        gridLayoutWidget->setGeometry(QRect(620, 40, 251, 151));
         gridLayoutTop = new QGridLayout(gridLayoutWidget);
         gridLayoutTop->setObjectName(QString::fromUtf8("gridLayoutTop"));
         gridLayoutTop->setContentsMargins(0, 0, 0, 0);
@@ -134,7 +139,7 @@ public:
 
         gridLayoutWidget_2 = new QWidget(centralwidget);
         gridLayoutWidget_2->setObjectName(QString::fromUtf8("gridLayoutWidget_2"));
-        gridLayoutWidget_2->setGeometry(QRect(570, 210, 302, 253));
+        gridLayoutWidget_2->setGeometry(QRect(620, 210, 302, 253));
         gridLayoutBottom = new QGridLayout(gridLayoutWidget_2);
         gridLayoutBottom->setObjectName(QString::fromUtf8("gridLayoutBottom"));
         gridLayoutBottom->setContentsMargins(0, 0, 0, 0);
@@ -237,14 +242,26 @@ public:
 
         resetButton = new QPushButton(centralwidget);
         resetButton->setObjectName(QString::fromUtf8("resetButton"));
-        resetButton->setGeometry(QRect(760, 520, 112, 32));
+        resetButton->setGeometry(QRect(810, 480, 112, 32));
         lcdNumber = new QLCDNumber(centralwidget);
         lcdNumber->setObjectName(QString::fromUtf8("lcdNumber"));
         lcdNumber->setGeometry(QRect(740, 10, 71, 21));
+        leftWallCheckBox = new QCheckBox(centralwidget);
+        leftWallCheckBox->setObjectName(QString::fromUtf8("leftWallCheckBox"));
+        leftWallCheckBox->setGeometry(QRect(10, 310, 86, 20));
+        rightWallCheckBox = new QCheckBox(centralwidget);
+        rightWallCheckBox->setObjectName(QString::fromUtf8("rightWallCheckBox"));
+        rightWallCheckBox->setGeometry(QRect(530, 310, 86, 20));
+        roofCheckBox = new QCheckBox(centralwidget);
+        roofCheckBox->setObjectName(QString::fromUtf8("roofCheckBox"));
+        roofCheckBox->setGeometry(QRect(280, 60, 86, 20));
+        groundCheckBox = new QCheckBox(centralwidget);
+        groundCheckBox->setObjectName(QString::fromUtf8("groundCheckBox"));
+        groundCheckBox->setGeometry(QRect(280, 580, 86, 20));
         MainWindow->setCentralWidget(centralwidget);
         menubar = new QMenuBar(MainWindow);
         menubar->setObjectName(QString::fromUtf8("menubar"));
-        menubar->setGeometry(QRect(0, 0, 896, 22));
+        menubar->setGeometry(QRect(0, 0, 936, 22));
         MainWindow->setMenuBar(menubar);
         statusbar = new QStatusBar(MainWindow);
         statusbar->setObjectName(QString::fromUtf8("statusbar"));
@@ -279,6 +296,10 @@ public:
         startButton->setText(QApplication::translate("MainWindow", "start", nullptr));
         positionLabel->setText(QApplication::translate("MainWindow", "position", nullptr));
         resetButton->setText(QApplication::translate("MainWindow", "reset", nullptr));
+        leftWallCheckBox->setText(QString());
+        rightWallCheckBox->setText(QString());
+        roofCheckBox->setText(QString());
+        groundCheckBox->setText(QString());
     } // retranslateUi
 
 };

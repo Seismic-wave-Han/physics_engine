@@ -11,6 +11,9 @@
 #include <QPen>
 #include <QWidget>
 
+//class Object;
+//class Rectangle;
+
 class Engine{
 public:
     Engine(){}
@@ -33,5 +36,7 @@ private:
     double delta=0.1;
     double g = 9.8;
     double mu = 0;
+
+
 };
 #endif // ENGINE_H
