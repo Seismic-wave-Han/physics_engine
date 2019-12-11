@@ -40,6 +40,8 @@ MainWindow::MainWindow(QWidget *parent)
 
 //    connect(world, &World::shoot, this, &MainWindow::shooting);
 
+    Rectangle fixedObject1 = Rectangle(&engine, true, {10, 10}, {30, 30});
+    world->createRectEvent(fixedObject1);
 
     // QTimer for animation
     QTimer *timer = new QTimer(this);

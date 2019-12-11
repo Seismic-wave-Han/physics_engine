@@ -102,24 +102,6 @@ void World::paintEvent(QPaintEvent *event){
     painter.end();
 }
 
-//void World::mousePressEvent(QMouseEvent *event)
-//{
-//    pressX=  event->x()-0.5*screenSize;
-//    pressY = event->y()-0.5*screenSize;
-//    qDebug() << pressX << "," << pressY;
-//}
-
-
-
-//void World::mouseReleased()
-//{
-//    QMouseEvent *event;
-//    mouseReleaseEvent(event);
-
-////    releaseX =  event->x()-0.5*screenSize;
-////    releaseY = event->y()-0.5*screenSize;
-//    qDebug() << releaseX << "," << releaseY;
-//}
 
 void World::clicked(){
 //    emit mouseReleaseEvent;

@@ -8,11 +8,15 @@
 
 
 Object::Object(Engine *engine, double mass, QPointF position, QPointF velocity, double restitution, bool isMovingY)://, bool isFixed):
-    engine(engine), position(position), velocity(velocity), mass(mass), restitution(restitution), isMovingY(isMovingY)//, isFixed(isFixed)
+    engine(engine), mass(mass), position(position), velocity(velocity), restitution(restitution), isMovingY(isMovingY)//, isFixed(isFixed)
 {
     setMassInversion();
     qDebug() << "Object is created.";
 }
+
+Object::Object(Engine *engine, QPointF position, bool isFixed, double mass, QPointF velocity, double restitution, bool isMovingY):
+    engine(engine), mass(mass), position(position), velocity(velocity), restitution(restitution), isMovingY(isMovingY), isFixed(isFixed)
+{}
 
 void Object::positionUpdate(){
     double g=engine->getGravity();
@@ -28,6 +32,10 @@ void Object::positionUpdate(){
 Rectangle::Rectangle(Engine *engine, double mass, QPointF size, QPointF position, QPointF velocity, double restitution, bool isMovingY):
    Object(engine, mass, position, velocity, restitution, isMovingY), width(size.x()), height(size.y())//, isMovingY(isMoving)
 {}
+// todo: 너무 constructor가 엉망임.
+Rectangle::Rectangle(Engine *engine,  bool isFixed, QPointF size, QPointF position):
+   Object(engine, position), width(size.x()), height(size.y())
+{}
 
 void Rectangle::bounce(){
     bool collision =rectangleVsGround(*this);
@@ -39,6 +47,10 @@ void Rectangle::bounce(){
 
 Circle::Circle(Engine *engine, double mass, double radius, QPointF position, QPointF velocity, double restitution, bool isMovingY):
     Object(engine, mass, position, velocity, restitution, isMovingY), radius(radius)//, isMovingY(isMoving)
+{}
+
+Circle::Circle(Engine *engine,  bool isFixed, double radius, QPointF position):
+   Object(engine, position), radius(radius)
 {}
 
 void Circle::bounce(){

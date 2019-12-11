@@ -15,6 +15,7 @@ class Object
 public:
     Object(Engine *engine, double mass, QPointF position, QPointF velocity, double restitution=0.95, bool isMovingY=true);
     //, bool isFixed=false);
+    Object(Engine *engine, QPointF position, bool isFixed=true, double mass=0, QPointF velocity={0,0}, double restitution=0.95, bool isMovingY=false);
 
     virtual ~Object(){}
 
@@ -40,19 +41,19 @@ public:
 
 public:
     Engine *engine;
-
+    double mass = 10;
     QPointF position = {0, 0};
     QPointF velocity = {0, 0};
-    double mass = 10;
     double massInv;
     double restitution = 0.95;
     bool isMovingY = true;
-//    bool isFixed = false;
+    bool isFixed = false;
 };
 
 class Rectangle : public Object{
 public:
     Rectangle(Engine *engine, double mass, QPointF size, QPointF position, QPointF velocity, double restitution, bool isMovingY);
+    Rectangle(Engine *engine, bool isFixed, QPointF size, QPointF position);
 
     QPointF Left_top() const override { return QPointF(position.x()-0.5*width, position.y()-0.5*height); }
     QPointF Right_bottom() const override { return QPointF(position.x()+0.5*width, position.y()+0.5*height); }
@@ -71,6 +72,7 @@ public:
 class Circle : public Object{
 public:
     Circle(Engine *engine, double mass, double radius, QPointF position, QPointF velocity, double restitution, bool isMovingY);
+    Circle(Engine *engine, bool isFixed, double radius, QPointF position);
 
     void bounce() override;
 //    void stopY(){isMovingY=false;};
