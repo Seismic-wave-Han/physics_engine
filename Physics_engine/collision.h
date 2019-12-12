@@ -215,7 +215,7 @@ bool circleVsGround(Circle &cir){
 }
 
 void positionCorrection(Manifold *m){
-    const double percent = 0.5; // usually 20% to 80%
+    const double percent = 1; // usually 20% to 80%
     const double  slop = 0.01; // usually 0.01 to 0.1
     Object *A=m->A;
     Object *B=m->B;

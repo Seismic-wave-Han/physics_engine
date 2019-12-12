@@ -42,6 +42,13 @@ MainWindow::MainWindow(QWidget *parent)
     Rectangle baseObject = Rectangle(&engine, true, {0, 0}, {1000,1000});
     world->background.insert(std::make_pair("base", baseObject));
 
+    // basket ball
+    Rectangle Object1= Rectangle(&engine, true, {10,50}, {200,-150});
+    world->background.insert(std::make_pair("goal", Object1));
+
+    Rectangle Object2= Rectangle(&engine, true, {10,480}, {240,10});
+    world->background.insert(std::make_pair("goalde", Object2));
+
     // QTimer for animation
     QTimer *timer = new QTimer(this);
     connect(timer, &QTimer::timeout, world, &World::animate);
