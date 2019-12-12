@@ -26,7 +26,6 @@ void Object::positionUpdate(){
         position.ry()+=velocity.ry()*delta;
         velocity.ry()+=g*delta;
     }
-//    qDebug() << position.rx()<< ", "<< position.ry();
 }
 
 Rectangle::Rectangle(Engine *engine, double mass, QPointF size, QPointF position, QPointF velocity, double restitution, bool isMovingY):
