@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>936</width>
-    <height>704</height>
+    <width>948</width>
+    <height>659</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -98,7 +98,7 @@
      <rect>
       <x>620</x>
       <y>210</y>
-      <width>302</width>
+      <width>321</width>
       <height>253</height>
      </rect>
     </property>
@@ -168,13 +168,6 @@
      <item row="3" column="2">
       <widget class="QDoubleSpinBox" name="sizeValueY"/>
      </item>
-     <item row="7" column="2">
-      <widget class="QPushButton" name="stopButton">
-       <property name="text">
-        <string>stop</string>
-       </property>
-      </widget>
-     </item>
      <item row="5" column="1">
       <widget class="QDoubleSpinBox" name="velocityValueX"/>
      </item>
@@ -191,13 +184,6 @@
      <item row="3" column="1">
       <widget class="QDoubleSpinBox" name="sizeValueX"/>
      </item>
-     <item row="7" column="1">
-      <widget class="QPushButton" name="startButton">
-       <property name="text">
-        <string>start</string>
-       </property>
-      </widget>
-     </item>
      <item row="4" column="0">
       <widget class="QLabel" name="positionLabel">
        <property name="text">
@@ -211,29 +197,26 @@
      <item row="4" column="2">
       <widget class="QDoubleSpinBox" name="positionValueY"/>
      </item>
+     <item row="7" column="1">
+      <widget class="QPushButton" name="createButton">
+       <property name="text">
+        <string>create</string>
+       </property>
+      </widget>
+     </item>
     </layout>
    </widget>
    <widget class="QPushButton" name="resetButton">
     <property name="geometry">
      <rect>
-      <x>810</x>
-      <y>480</y>
+      <x>800</x>
+      <y>540</y>
       <width>112</width>
       <height>32</height>
      </rect>
     </property>
     <property name="text">
      <string>reset</string>
-    </property>
-   </widget>
-   <widget class="QLCDNumber" name="lcdNumber">
-    <property name="geometry">
-     <rect>
-      <x>740</x>
-      <y>10</y>
-      <width>71</width>
-      <height>21</height>
-     </rect>
     </property>
    </widget>
    <widget class="QCheckBox" name="leftWallCheckBox">
@@ -288,13 +271,39 @@
      <string/>
     </property>
    </widget>
+   <widget class="QPushButton" name="startButton">
+    <property name="geometry">
+     <rect>
+      <x>810</x>
+      <y>470</y>
+      <width>107</width>
+      <height>32</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>start</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="stopButton">
+    <property name="geometry">
+     <rect>
+      <x>814</x>
+      <y>500</y>
+      <width>101</width>
+      <height>32</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>stop</string>
+    </property>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>936</width>
+     <width>948</width>
      <height>22</height>
     </rect>
    </property>

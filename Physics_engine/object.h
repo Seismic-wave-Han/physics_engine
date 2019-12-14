@@ -13,16 +13,16 @@ class Engine;
 class Object
 {
 public:
-    Object(Engine *engine, double mass, QPointF position, QPointF velocity, double restitution=0.95, bool isMovingY=true);
+    Object(Engine *engine, bool isFixed, double mass, QPointF position, QPointF velocity={0, 0}, double restitution=1.0, bool isMovingY=true);
     //, bool isFixed=false);
-    Object(Engine *engine, QPointF position, bool isFixed=true, double mass=0, QPointF velocity={0,0}, double restitution=1.0, bool isMovingY=false);
+//    Object(Engine *engine, QPointF position, bool isFixed=true, double mass=0, QPointF velocity={0,0}, double restitution=1.0, bool isMovingY=false);
 
     virtual ~Object(){}
 
 //    void update();
 
     void positionUpdate();
-    virtual void bounce()=0;
+//    virtual void bounce()=0;
 
 
     void setMassInversion(){
@@ -52,15 +52,15 @@ public:
 
 class Rectangle : public Object{
 public:
-    Rectangle(Engine *engine, double mass, QPointF size, QPointF position, QPointF velocity, double restitution, bool isMovingY);
-    Rectangle(Engine *engine, bool isFixed, QPointF size, QPointF position);
+    Rectangle(Engine *engine, bool isFixed, double mass, QPointF size, QPointF position, QPointF velocity={0,0}, double restitution=1.0, bool isMovingY=true);
+//    Rectangle(Engine *engine, bool isFixed, QPointF size, QPointF position);
 
     QPointF Left_top() const override { return QPointF(position.x()-0.5*width, position.y()-0.5*height); }
     QPointF Right_bottom() const override { return QPointF(position.x()+0.5*width, position.y()+0.5*height); }
     double getWidth() override {return width;}
     double getHeight() override {return height;}
 
-    void bounce() override;
+//    void bounce() override;
 
 public:
     double width=10, height=10;
@@ -71,10 +71,10 @@ public:
 
 class Circle : public Object{
 public:
-    Circle(Engine *engine, double mass, double radius, QPointF position, QPointF velocity, double restitution, bool isMovingY);
-    Circle(Engine *engine, bool isFixed, double radius, QPointF position);
+    Circle(Engine *engine, bool isFixed, double mass, double radius, QPointF position, QPointF velocity={0,0}, double restitution=1.0, bool isMovingY=true);
+//    Circle(Engine *engine, bool isFixed, double radius, QPointF position);
 
-    void bounce() override;
+//    void bounce() override;
 //    void stopY(){isMovingY=false;};
     double getRadius() override {return radius;}
 

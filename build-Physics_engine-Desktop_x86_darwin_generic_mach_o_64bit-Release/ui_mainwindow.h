@@ -15,7 +15,6 @@
 #include <QtWidgets/QComboBox>
 #include <QtWidgets/QDoubleSpinBox>
 #include <QtWidgets/QGridLayout>
-#include <QtWidgets/QLCDNumber>
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QMainWindow>
 #include <QtWidgets/QMenuBar>
@@ -55,21 +54,21 @@ public:
     QDoubleSpinBox *massValue;
     QLabel *velocityLabel;
     QDoubleSpinBox *sizeValueY;
-    QPushButton *stopButton;
     QDoubleSpinBox *velocityValueX;
     QLabel *sizeLabel;
     QDoubleSpinBox *restitutionValue;
     QDoubleSpinBox *sizeValueX;
-    QPushButton *startButton;
     QLabel *positionLabel;
     QDoubleSpinBox *positionValueX;
     QDoubleSpinBox *positionValueY;
+    QPushButton *createButton;
     QPushButton *resetButton;
-    QLCDNumber *lcdNumber;
     QCheckBox *leftWallCheckBox;
     QCheckBox *rightWallCheckBox;
     QCheckBox *roofCheckBox;
     QCheckBox *groundCheckBox;
+    QPushButton *startButton;
+    QPushButton *stopButton;
     QMenuBar *menubar;
     QStatusBar *statusbar;
 
@@ -77,7 +76,7 @@ public:
     {
         if (MainWindow->objectName().isEmpty())
             MainWindow->setObjectName(QString::fromUtf8("MainWindow"));
-        MainWindow->resize(936, 704);
+        MainWindow->resize(948, 659);
         centralwidget = new QWidget(MainWindow);
         centralwidget->setObjectName(QString::fromUtf8("centralwidget"));
         verticalLayoutWidget_2 = new QWidget(centralwidget);
@@ -139,7 +138,7 @@ public:
 
         gridLayoutWidget_2 = new QWidget(centralwidget);
         gridLayoutWidget_2->setObjectName(QString::fromUtf8("gridLayoutWidget_2"));
-        gridLayoutWidget_2->setGeometry(QRect(620, 210, 302, 253));
+        gridLayoutWidget_2->setGeometry(QRect(620, 210, 321, 253));
         gridLayoutBottom = new QGridLayout(gridLayoutWidget_2);
         gridLayoutBottom->setObjectName(QString::fromUtf8("gridLayoutBottom"));
         gridLayoutBottom->setContentsMargins(0, 0, 0, 0);
@@ -195,11 +194,6 @@ public:
 
         gridLayoutBottom->addWidget(sizeValueY, 3, 2, 1, 1);
 
-        stopButton = new QPushButton(gridLayoutWidget_2);
-        stopButton->setObjectName(QString::fromUtf8("stopButton"));
-
-        gridLayoutBottom->addWidget(stopButton, 7, 2, 1, 1);
-
         velocityValueX = new QDoubleSpinBox(gridLayoutWidget_2);
         velocityValueX->setObjectName(QString::fromUtf8("velocityValueX"));
 
@@ -220,11 +214,6 @@ public:
 
         gridLayoutBottom->addWidget(sizeValueX, 3, 1, 1, 1);
 
-        startButton = new QPushButton(gridLayoutWidget_2);
-        startButton->setObjectName(QString::fromUtf8("startButton"));
-
-        gridLayoutBottom->addWidget(startButton, 7, 1, 1, 1);
-
         positionLabel = new QLabel(gridLayoutWidget_2);
         positionLabel->setObjectName(QString::fromUtf8("positionLabel"));
 
@@ -240,12 +229,14 @@ public:
 
         gridLayoutBottom->addWidget(positionValueY, 4, 2, 1, 1);
 
+        createButton = new QPushButton(gridLayoutWidget_2);
+        createButton->setObjectName(QString::fromUtf8("createButton"));
+
+        gridLayoutBottom->addWidget(createButton, 7, 1, 1, 1);
+
         resetButton = new QPushButton(centralwidget);
         resetButton->setObjectName(QString::fromUtf8("resetButton"));
-        resetButton->setGeometry(QRect(810, 480, 112, 32));
-        lcdNumber = new QLCDNumber(centralwidget);
-        lcdNumber->setObjectName(QString::fromUtf8("lcdNumber"));
-        lcdNumber->setGeometry(QRect(740, 10, 71, 21));
+        resetButton->setGeometry(QRect(800, 540, 112, 32));
         leftWallCheckBox = new QCheckBox(centralwidget);
         leftWallCheckBox->setObjectName(QString::fromUtf8("leftWallCheckBox"));
         leftWallCheckBox->setGeometry(QRect(10, 310, 86, 20));
@@ -258,10 +249,16 @@ public:
         groundCheckBox = new QCheckBox(centralwidget);
         groundCheckBox->setObjectName(QString::fromUtf8("groundCheckBox"));
         groundCheckBox->setGeometry(QRect(280, 580, 86, 20));
+        startButton = new QPushButton(centralwidget);
+        startButton->setObjectName(QString::fromUtf8("startButton"));
+        startButton->setGeometry(QRect(810, 470, 107, 32));
+        stopButton = new QPushButton(centralwidget);
+        stopButton->setObjectName(QString::fromUtf8("stopButton"));
+        stopButton->setGeometry(QRect(814, 500, 101, 32));
         MainWindow->setCentralWidget(centralwidget);
         menubar = new QMenuBar(MainWindow);
         menubar->setObjectName(QString::fromUtf8("menubar"));
-        menubar->setGeometry(QRect(0, 0, 936, 22));
+        menubar->setGeometry(QRect(0, 0, 948, 22));
         MainWindow->setMenuBar(menubar);
         statusbar = new QStatusBar(MainWindow);
         statusbar->setObjectName(QString::fromUtf8("statusbar"));
@@ -291,15 +288,16 @@ public:
         shapeComboBox->setItemText(1, QApplication::translate("MainWindow", "Rectangle", nullptr));
 
         velocityLabel->setText(QApplication::translate("MainWindow", "velocity", nullptr));
-        stopButton->setText(QApplication::translate("MainWindow", "stop", nullptr));
         sizeLabel->setText(QApplication::translate("MainWindow", "size", nullptr));
-        startButton->setText(QApplication::translate("MainWindow", "start", nullptr));
         positionLabel->setText(QApplication::translate("MainWindow", "position", nullptr));
+        createButton->setText(QApplication::translate("MainWindow", "create", nullptr));
         resetButton->setText(QApplication::translate("MainWindow", "reset", nullptr));
         leftWallCheckBox->setText(QString());
         rightWallCheckBox->setText(QString());
         roofCheckBox->setText(QString());
         groundCheckBox->setText(QString());
+        startButton->setText(QApplication::translate("MainWindow", "start", nullptr));
+        stopButton->setText(QApplication::translate("MainWindow", "stop", nullptr));
     } // retranslateUi
 
 };

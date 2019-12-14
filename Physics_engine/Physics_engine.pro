@@ -21,6 +21,7 @@ SOURCES += \
     main.cpp \
     mainwindow.cpp \
     object.cpp \
+    parameter.cpp \
     world.cpp
 
 HEADERS += \
@@ -28,6 +29,7 @@ HEADERS += \
     engine.h \
     mainwindow.h \
     object.h \
+    parameter.h \
     world.h
 
 FORMS += \

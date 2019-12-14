@@ -4,7 +4,3 @@
 #include <QPainter>
 #include <QPaintEvent>
 #include <QWidget>
-
-
-
-

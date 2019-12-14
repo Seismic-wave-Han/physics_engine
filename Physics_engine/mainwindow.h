@@ -5,20 +5,12 @@
 #include "world.h"
 
 #include <QMainWindow>
-//#include <QHBoxLayout>
-//#include <QComboBox>
-//#include <QLabel>
-//#include <QTextLayout>
-//#include <QPushButton>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
-
 QT_END_NAMESPACE
-//class Engine;
-//class World;
 
-
+// MainWindow: It has engine and world, so all the things related with UI and objects are managed in here.
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
@@ -28,61 +20,33 @@ public:
     ~MainWindow();
 
 private slots:
-//    void shooting(double x1, double y1, double x2, double y2);
+    // set global variables in engine
     void on_applyButton_clicked();
     void on_defaultButton_clicked();
-//    void positionXShow();
+    // set properties of object to create
     void on_setButton_clicked();
-//    void shapeChanged();
-
+    // create an object with set values
+    void on_createButton_clicked();
+    // start or stop to move the objects in world
     void on_startButton_clicked();
-
     void on_stopButton_clicked();
-
+    // delete all objects in the world
     void on_resetButton_clicked();
-
+    // set or unset ground, wall roof by checkbox button
     void on_groundCheckBox_stateChanged(int arg1);
-
     void on_rightWallCheckBox_stateChanged(int arg1);
-
     void on_leftWallCheckBox_stateChanged(int arg1);
-
     void on_roofCheckBox_stateChanged(int arg1);
 
+public:
+    // get and set position and velocity values from mouse positions
+    void getDynamicParameters();
+
 private:
+    // member variables
     Ui::MainWindow *ui;
     Engine engine;
     World *world;
 
-//    World *world;
-//    QLabel *title;
-
-//    World *world;
-//    QLabel *properties;
-//    QLabel *gravity;
-//    QTextLayout *gravityValue;
-//    QLabel *friction;
-//    QTextLayout *frictionValue;
-
-//    QPushButton *defaultButton;
-//    QPushButton *applyButton;
-
-//    QLabel *object;
-//    QLabel *shape;
-//    QComboBox *shapeSelect;
-//    QLabel *mass;
-//    QTextLayout *massValue;
-//    QLabel *size;
-//    QTextLayout *sizeFirst;
-//    QTextLayout *sizeSecond;
-
-//    QLabel *velocity;
-//    QTextLayout *velocityX;
-//    QTextLayout *velocityY;
-
-//    QLabel *restitution;
-//    QTextLayout *restitutionValue;
-
-//    QPushButton *setButton;
 };
 #endif // MAINWINDOW_H

@@ -1,7 +1,7 @@
 #include "world.h"
 #include "engine.h"
 #include "object.h"
-//#include "collision.h" // 이거 넣으니까 안되더라
+#include "parameter.h"
 
 #include <QTimer>
 #include <QMouseEvent>
@@ -12,20 +12,50 @@
 
 #include <iostream> // delete after testing
 
+//![0] constructor
+// constructor
 World::World(Engine *engine, QWidget *parent):
     QOpenGLWidget(parent), engine(engine)
 {
-    dt = 0;
+    // set screen size
     screenSize = 500;
     setFixedSize(screenSize, screenSize);
     setAutoFillBackground(false);
 }
+//![0]
 
+//![1] functions
+// animate: to update the world
 void World::animate()
 {
-    dt = (dt+qobject_cast<QTimer*>(sender())->interval())%1000; //todo: Does 'dt' need?
     update();
 }
+
+// createObject
+void::World::createObject(){
+    // calculate press point to release point
+    QPointF mouseMovedDistance = pressPos-releasePos; // It assigned to velocity
+
+    // check shape and create appropriate object
+    if (shape == "Circle"){
+        Circle circle = Circle(engine, false, mass, size.x(), releasePos, mouseMovedDistance, restitution, isMovingY);
+        circles.push_back(circle);
+    } else if (shape == "Rectangle"){
+        Rectangle rectangle = Rectangle(engine, false, mass, size, releasePos, mouseMovedDistance, restitution, isMovingY);
+        rectangles.push_back(rectangle);
+    }
+}
+
+// setStaticParameters: to set parameters gotten from UI
+void World::setStaticParameters(Parameter paramBox)
+{
+    this->shape = paramBox.shape;
+    this->mass = paramBox.mass;
+    this->size = size;
+    this->restitution = restitution;
+    this->isMovingY = isMovingY;
+}
+
 
 void World::paintEvent(QPaintEvent *event){
     QPainter painter;
@@ -40,13 +70,10 @@ void World::paintEvent(QPaintEvent *event){
     size_t sizeC=circles.size();
     size_t sizeR=rectangles.size();
 
-//*********** hot fix
-
     for (auto iter=background.begin(); iter!=background.end(); iter++){
         Object *backObject = &iter->second;
         painter.drawRect(int(backObject->Left_top().rx()), int(backObject->Left_top().ry()), int(backObject->getWidth()), int(backObject->getHeight()));
-        }// todo: use int spinbox, and change type of width, height to int?
-
+    }
 
     for (size_t i=0; i<sizeC; ++i){
         Object *circleA = &circles[i];
@@ -107,17 +134,7 @@ void World::paintEvent(QPaintEvent *event){
 }
 
 
-void World::clicked(){
-//    emit mouseReleaseEvent;
-}
 
-void World::createCircleEvent(Circle circle){
-    circles.push_back(circle);
-//    paintCircle
-}
-void World::createRectEvent(Rectangle rectangle){
-    rectangles.push_back(rectangle);
-}
 
 void World::mousePressEvent(QMouseEvent *event)
 {
@@ -133,24 +150,10 @@ void World::mouseReleaseEvent(QMouseEvent *event)
     QPointF correctionFactor = {0.5*screenSize, 0.5*screenSize};
     releasePos = releasePos - correctionFactor;
 
-    QPointF mouseMovedDistance = pressPos-releasePos;
 
-//    shoot(pressX, pressY, releaseX, releaseY);
-    if (shape == "Circle"){
-        Circle circle = Circle(engine, mass, size.x(), releasePos, mouseMovedDistance, restitution, isMovingY);
-        createCircleEvent(circle);
-    } else if (shape == "Rectangle"){
-        Rectangle rectangle = Rectangle(engine, mass, size, releasePos, mouseMovedDistance, restitution, isMovingY);
-        createRectEvent(rectangle);
-    }
+
+    createObject();
+
 }
 
-void World::setParameters(QString shape, double mass, QPointF size, double restitution, bool isMovingY)
-{
-    this->shape = shape;
-    this->mass =mass;
-    this->size = size;
-    this->restitution = restitution;
-    this->isMovingY = isMovingY;
-}
 
