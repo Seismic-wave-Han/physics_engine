@@ -1,6 +1,3 @@
 #include "engine.h"
-//#include "object.h"
 
-#include <QPainter>
-#include <QPaintEvent>
-#include <QWidget>
+/* This is an empty file but I remained this file for the case that I develop more */

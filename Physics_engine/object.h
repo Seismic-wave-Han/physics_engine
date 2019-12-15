@@ -9,7 +9,7 @@
 
 struct Manifold;
 class Engine;
-class Parameter;
+struct Parameter;
 
 // Object: parent for Rectangle and Circle
 // It holds general properties of object and Engine

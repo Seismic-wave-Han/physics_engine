@@ -10,7 +10,7 @@ class Engine;
 class Object;
 class Circle;
 class Rectangle;
-class Parameter;
+struct Parameter;
 
 class World : public QOpenGLWidget
 {

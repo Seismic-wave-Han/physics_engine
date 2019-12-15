@@ -6,12 +6,8 @@
 
 // Parameter: simple struct to hold object parameters
 // added to simplify the code
-class Parameter
+struct Parameter
 {
-public:
-    Parameter();
-
-public:
     // parameters of object(set default values for program safety)
     QString shape="Circle";
     double mass=10;
