@@ -12,7 +12,7 @@ class Engine;
 class Parameter;
 
 // Object: parent for Rectangle and Circle
-// it holds general properties of object and Engine
+// It holds general properties of object and Engine
 class Object
 {
 public:
@@ -92,7 +92,7 @@ public:
 
 
 // Manifold: hold two Objects and their penetration and normal of collision
-// this class also hold functions dealing with the collision process
+// This class also hold functions dealing with the collision process
 struct Manifold
 {
     // Constructor

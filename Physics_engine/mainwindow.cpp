@@ -51,24 +51,28 @@ MainWindow::MainWindow(QWidget *parent)
     ui->groundCheckBox->setChecked(true); // ground will exist for default setting
 
     //// basket ball example(commented)
-//    Rectangle Object1= Rectangle(&engine, true, {10,50}, {200,-150});
-//    world->background.insert(std::make_pair("goal", Object1));
-//    Rectangle Object2= Rectangle(&engine, true, {10,480}, {240,10});
-//    world->background.insert(std::make_pair("goalde", Object2));
+//    {
+//        Rectangle Object1= Rectangle(&engine, true, {10,50}, {200,-150});
+//        world->background.insert(std::make_pair("goal", Object1));
+//        Rectangle Object2= Rectangle(&engine, true, {10,480}, {240,10});
+//        world->background.insert(std::make_pair("goalde", Object2));
+//    }
 
     //// poket ball example(commented)
     // in this example some other parameters also need to be modified manually
-//    double e=0.7;
-//    double mass=10;
-//    double root3=1.732;
-//    double r=15;
-//    for (int i=0; i<4; i++){
-//        double x = 100 + i*root3*r;
-//        double y= -r*i;
-//        for (int j=0; j<i+1; j++){
-//            Circle circle(&engine, mass, r, {x,y},{0,0}, e, true);
-//            world->createCircleEvent(circle);
-//            y += 2*r;
+//    {
+//        double e=0.7;
+//        double mass=10;
+//        double root3=1.732;
+//        double r=15;
+//        for (int i=0; i<4; i++){
+//            double x = 100 + i*root3*r;
+//            double y= -r*i;
+//            for (int j=0; j<i+1; j++){
+//                Circle circle(&engine, mass, r, {x,y},{0,0}, e, true);
+//                world->createCircleEvent(circle);
+//                y += 2*r;
+//            }
 //        }
 //    }
 
@@ -131,7 +135,8 @@ void MainWindow::on_setButton_clicked()
     // send parameters to world
     world->setStaticParameters(paramBox);
 
-    // initialize the mouse positions: for the case of clicking create button right after set button
+    // initialize the mouse positions:
+    // for the case of clicking create button right after set button
     world->pressPos = paramBox.position + paramBox.velocity;
     world->releasePos = paramBox.position;
 }
@@ -266,6 +271,7 @@ void MainWindow::on_roofCheckBox_stateChanged(int arg1)
     }
 }
 //![1]
+
 
 //![2] functions
 // getMousePositions: get and set position and velocity values from mouse positions

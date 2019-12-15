@@ -8,261 +8,296 @@
 #include <algorithm>
 #include <QPointF>
 
+//![0] simplified functions
+// Functions used only in this file use uppercase letters to distinguish them from variable names.
 
-// simple distance function: position to position
-double Distance(const QPointF &a, const QPointF &b = {0 , 0}){
+// Distance: simple distance function to calculate position-to-position
+double Distance(const QPointF &a, const QPointF &b = {0 , 0})
+{
     return std::sqrt(std::pow((a.x()-b.x()),2) + std::pow((a.y()-b.y()),2));
 }
 
-//// collision detectrion function: rectangle vs rectangle
-//bool Rec_vs_rec(const Rectangle &rec1, const Rectangle &rec2){
-//    // if objects impulsed, it return true. otherwise return false
-//    if(rec1.Right_bottom().x() < rec2.Left_top().x() or rec1.Left_top().x() > rec2.Right_bottom().x()) return false;
-//    if(rec1.Right_bottom().y() > rec2.Left_top().y() or rec1.Left_top().y() < rec2.Right_bottom().y()) return false;
-//    return true;
-//}
-
-//bool Cir_vs_cir(const Circle &cir1, const Circle &cir2){
-//    if (Distance(cir1.position, cir2.position) > cir1.radius + cir2.radius) return false;
-//    return true;
-//}
-
-double Clamp(double min, double max, double value){
+// Clamp: trunctate value between min and max
+double Clamp(double min, double max, double value)
+{
     if (value<min) value=min;
     if (value>max) value=max;
     return value;
 }
 
-//QPointF velocityDamper(QPointF velocity){
-//    QPointF damped;
-//    double focus = 5;
-//    double rate = 1.02;
-//    const int signX = (velocity.x() > 0) ? 1:-1;
-//    const int signY = (velocity.y() > 0) ? 1:-1;
-//    damped.setX(velocity.rx());
-//    damped.setY(signY*std::sqrt(std::abs(velocity.ry()*velocity.ry()+focus))*rate);
-//    return damped;
-//}
 
+//![1] collision functions
+// Collision functions have names of the form 'objectVsObject',
+//     return booleans, and set normal and penetration to the manifold.
+
+// circleVsCircle:
+// The manifold is passed to this function which determines the collision between the circles.
+// In case of collision, calculate and set normal and penetration.
 bool circleVsCircle( Manifold *m )
 {
-  // Setup a couple pointers to each object
+    // setup a couple pointers to each object
     Object *A = m->A;
     Object *B = m->B;
-    double radiusA=A->getRadius(); //todo: could be problem
+
+    // save the variables
+    double radiusA=A->getRadius();
     double radiusB=B->getRadius();
-  // Vector from A to B
+
+    // vector from A to B and its distance
     QPointF positionRelative = B->position - A->position;
     double distance = Distance(positionRelative);
 
+    // calculate sum of two radius
     double radiusTotal = radiusA+radiusB;
-//  r *= r;
 
+    // if two object is farther away, then there are no collision
     if(distance > radiusTotal)
         return false;
 
-  // Circles have collided, now compute manifold
-     // perform actual sqrt
+    // if two circles have collided, now compute manifold
 
-  // If distance between circles is not zero
+    // If distance between circles is not zero
     if(distance != 0){
-    // Distance is difference between radius and distance
+        // penetration is difference between radius and distance
         m->penetration = radiusTotal - distance;
 
-    // Utilize our d since we performed sqrt on it already within Length( )
-    // Points from A to B, and is a unit vector
+        // normal is unit vector of relative position
         m->normal = positionRelative / distance;
         return true;
     }
-
-  // Circles are on same position
-    else{
-    // Choose random (but consistent) values
+    // if circles are on same position
+    else {
+    // choose random (but consistent) values
         m->penetration = radiusA;
         m->normal = QPointF(1,0);
         return true;
     }
 }
 
+// rectangleVsRectangle:
+// The manifold is passed to this function which determines the collision between the circles.
+// In case of collision, calculate and set normal and penetration.
+// I don't consider rotation yet, normal would be have x-axis, y-axis direction
 bool rectangleVsRectangle( Manifold *m )
 {
-  // Setup a couple pointers to each object
+    // setup a couple pointers to each object
     Object *A = m->A;
     Object *B = m->B;
 
-  // Vector from A to B
+    // vector from A to B
     QPointF positionRelative = B->position - A->position;
+
+    // relative velocity from A to B
     QPointF velocityRelative = B->velocity - A->velocity;
 
-
-  // Calculate half extents along x axis for each object
+    // get widths from rectangles
     double widthA=A->getWidth();
     double widthB=B->getWidth();
 
-  // Calculate overlap on x axis
+    // calculate overlap on x axis
     double overlapX = 0.5*(widthA+widthB) - abs(positionRelative.x());
 
-  // SAT test on x axis
+    // overlapX and overlapY might be positive when it colide
+
+    // so for the case of overlapX is positive then calculate overlapY
     if(overlapX > 0){
-    // Calculate half extents along x axis for each object
+        // get heights form rectangles
         double heightA=A->getHeight();
         double heightB=B->getHeight();
 
+        // calculate overlap on y axis
         double overlapY = 0.5*(heightA+heightB) - abs(positionRelative.y());
 
-        // SAT test on y axis
+        // for the case of collision
         if(overlapY > 0) {
-          // Find out which axis is axis of least penetration
+            // find out which axis is axis of least penetration
+            // if overlapY is larger then normal would be x-axis
             if(overlapX < overlapY) {
-            // Point towards B knowing that n points from A to B
-//                if(positionRelative.x() < 0) { m->normal = QPointF( -1, 0 );}
-                if(velocityRelative.x() > 0) { m->normal = QPointF( -1, 0 );}
-                else { m->normal = QPointF( 1, 0 );}
-            m->penetration = overlapX;
-            return true;
+                // direction of normal is opposite to relative velocity
+                if(velocityRelative.x() > 0) { m->normal = QPointF( -1, 0 ); }
+                else { m->normal = QPointF( 1, 0 ); }
+
+                // and penetration is same as overlapX
+                m->penetration = overlapX;
+                return true;
             }
+            // if overlapX is larger then normal would be y-axis
+            // and follow same mechanism
             else {
-            // Point toward B knowing that n points from A to B
-//                if(positionRelative.y() < 0) {m->normal = QPointF( 0, -1 );}
                 if(velocityRelative.y() > 0) {m->normal = QPointF( 0, -1 );}
                 else { m->normal = QPointF( 0, 1 );}
-            m->penetration = overlapY;
-            return true;
+                m->penetration = overlapY;
+                return true;
             }
         }
     }
+    // if both overlap of X and Y is not positive, then collision won't occur
     return false;
 }
 
-bool rectangleVsCircle(Manifold *m){
-    // Setup a couple pointers to each object
+// rectangleVsCircle:
+// Collision on the sides and on the edges are different when it colide.
+// To solve this problem at once, I used the idea of 'closest'.
+// 'closest' is the point on the side of the rectangle that is closest to the circle's center.
+// For collision on the sides, normal would be perpendicular to the rectangle
+// For collision on the edges, normal would have proper angle
+bool rectangleVsCircle(Manifold *m)
+{
+    // setup a couple pointers to each object
     Object *A = m->A;
     Object *B = m->B;
 
-    // Vector from A to B
+    // vector from A to B
     QPointF positionRelative = B->position - A->position;
 
+    // signX/signY is the sign of direction of positionRelative
+    // I optimized the code by taking all the collisions in one quadrant,
+    //   calculating them, and multiplying them by the sign at the end.
     const int signX = (positionRelative.x() > 0) ? 1:-1;
     const int signY = (positionRelative.y() > 0) ? 1:-1;
 
+    // 'closest'
+    // assign closest as positionRelative at first.
     QPointF closest = positionRelative;
 
+    // get varibles of rectangle
     const double widthA=A->getWidth();
     const double heightA=A->getHeight();
 
+    // clamp closest to inside of the rectangle
+    // If the center of the circle is outside the rectangle,
+    //    the closest is clamped over the side of the rectangle.
+    // If the center of the circle is in the rectangle, it does not change.
     closest.rx() = Clamp(-0.5*widthA, 0.5*widthA, closest.x());
     closest.ry() = Clamp(-0.5*heightA, 0.5*heightA, closest.y());
 
+    // boolian variable inside
     bool inside = false;
 
+    // inside is true when center of circle is in rectangle
     if (positionRelative==closest){
         inside = true;
 
-    // Find closest axis
-        if(abs( positionRelative.x() ) > abs( positionRelative.y() )) closest.rx() = signX*0.5*widthA;
-        else closest.ry() = signY*0.5*heightA;
+        // find the closest axis and Move closest over the side of the rectangle.
+        // generalize the code by using signX/signY.
+        if (abs(positionRelative.x()) > abs(positionRelative.y())) {
+            closest.rx() = signX*0.5*widthA;
+        }
+        else {
+            closest.ry() = signY*0.5*heightA;
+        }
     }
 
+    // calculate normal(with an indeterminate sign)
     QPointF normal = positionRelative - closest;
     double distance = Distance(normal);
+    normal /=distance;
 
+    // get radius from circle
     const double radius=B->getRadius();
 
-    // Early out of the radius is shorter than distance to closest point and
-    // Circle not inside the AABB
-    if(distance > radius && !inside) return false;
+    // early out of the radius is shorter than distance to closest point and
+    //     Circle not inside the Rectangle
+    if ((distance > radius) && (!inside)) return false;
 
-    // Avoided sqrt until we needed
-
-    // Collision normal needs to be flipped to point outside if circle was
-    // inside the AABB
-    if(inside) {
-        m->normal = -normal/distance;
+    // collision normal needs to be flipped to point outside
+    //     if circle is inside the AABB
+    // penetration also should be weighted
+    if (inside) {
+        m->normal = -normal;
         m->penetration = radius + distance;
     }
-    else{
-        m->normal = normal/distance;
+    else {
+        m->normal = normal;
         m->penetration = radius - distance;
     }
     return true;
 }
+//![1]
 
-//bool rectangleVsGround(Rectangle &rec){
-//    qreal ground=250;
-//    if(rec.Right_bottom().y() > ground) {
-//        rec.position.setY( ground - 0.5*rec.height);
-//        if (rec.velocity.ry() < 5) {
-//            rec.stopY();
-//            rec.velocity.setY(0);
-//        }
-//        return true;
 
-//    }
-//    return false;
-//}
-
-//bool circleVsGround(Circle &cir){
-//    qreal ground=250;
-//    if((cir.position.y()+cir.radius) > ground) {
-//        cir.position.setY( ground - cir.radius);
-//        if(cir.velocity.ry() < 5){
-//            cir.stopY();
-//            cir.velocity.setY(0);
-//        }
-//        return true;
-//    }
-//    return false;
-//}
-
+//![2] functions for after collision occur
+// positionCorrection:
+// This function corrects the position of two overlapping objects to their mass.
 void positionCorrection(Manifold *m){
-    const double percent = 1.01; // usually 20% to 80%
-    const double  slop = 0.01; // usually 0.01 to 0.1
+    // these values can be modified to make engnie more stable
+    const double percent = 1.01; // I made 101% correction to avoid overlap
+    const double  slop = 0.01; // If overlap is too slight(smaller than slop), you can ignore overlap
+
+    // setup two objects
     Object *A=m->A;
     Object *B=m->B;
 
+    // check if both of two objects don't have infinite mass(to avoid divided by 0)
     if (A->massInv + B->massInv != 0 ){
-    QPointF correction = std::max(m->penetration - slop, 0.0 ) / (A->massInv + B->massInv) * percent * m->normal;
-    A->position -= A->massInv * correction;
-    B->position += B->massInv * correction;
+        // correction is basically (penetration*normal)
+        QPointF correction = std::max(m->penetration - slop, 0.0 )*percent*m->normal
+                             / (A->massInv + B->massInv) ;
+        // and divide by the total massInv and multiply each massInv.
+        A->position -= A->massInv * correction;
+        B->position += B->massInv * correction;
     }
 }
 
+// resolveCollision:
+// Here we calculate the impulse scalar j and calculate the velocity
+//     after the collision, taking into account each mass in the normal direction.
 void resolveCollision(Manifold *m){
+    // setup two objects
     Object *A=m->A;
     Object *B=m->B;
 
-    // Calculate relative velocity
+    // calculate relative velocity
     QPointF velocityRelative = B->velocity - A->velocity;
 
-    // Calculate relative velocity in terms of the normal direction
+    // calculate relative velocity in terms of the normal direction
     double velocityDotNormal = QPointF::dotProduct( velocityRelative, m->normal );
 
-    // Do not resolve if velocities are separating
+    // do not resolve if velocities are separating
     if(velocityDotNormal > 0) return;
 
-    // Calculate restitution
+    // calculate restitution
+    // If restitution is larger than 0.98, then truncate the value.
+    // 0.98 was obtained experimentally that makes collision stable.
     double e = std::min(std::min( A->restitution, B->restitution),0.98);
 
-    // Calculate impulse scalar
+    // calculate impulse scalar 'j'
+    // check if both of two objects don't have infinite mass(to avoid divided by 0)
     if (A->massInv + B->massInv != 0 ){
+        // calculate j
         double j = -(1 + e) * velocityDotNormal / (A->massInv + B->massInv);
-        double declineFactor = 8/(A->massInv + B->massInv);
+
+        // choose declineFactor(obtained experimentally)
+        // declineFactor is constant that acts as the hyperbolic focus.
+        // by adding declineFactor,
+        //     when the impact force is near zero, j is greatly reduced.
+        double declineFactor = 8; // 5 to 10 can be used
+        declineFactor /= (A->massInv + B->massInv);
+
+        // decline is applied only when the object collides with the fixed object
         if (A->massInv==0 | B->massInv ==0){
-            if (j>declineFactor){
-                declineFactor *= declineFactor;
+            // the decrement must not be greater than the original value.
+            if (j > declineFactor){
+                declineFactor *= declineFactor; //The process of fitting the order
+
+                // apply the decline
                 j = std::sqrt(j*j - declineFactor);
-            } else {
+            }
+            // if the constant decrement is greater than j,
+            //     then use percent attenuation.
+            else {
                 j=0.5*j;
             }
         }
 
-        // Apply impulse
+        // apply impulse
         QPointF impulse = j * m->normal;
 
+        // change the velocity with the ratio of massInv
         A->velocity -= A->massInv * impulse;
         B->velocity += B->massInv * impulse;
     }
 }
-
+//![2]
 
 #endif // COLLISION_H
