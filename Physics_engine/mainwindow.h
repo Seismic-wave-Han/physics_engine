@@ -32,11 +32,14 @@ private slots:
     void on_stopButton_clicked();
     // delete all objects in the world
     void on_resetButton_clicked();
+    // make the next object to be fixed
+    void on_fixCheckBox_stateChanged(int arg1);
     // set or unset ground, wall roof by checkbox button
     void on_groundCheckBox_stateChanged(int arg1);
     void on_rightWallCheckBox_stateChanged(int arg1);
     void on_leftWallCheckBox_stateChanged(int arg1);
     void on_roofCheckBox_stateChanged(int arg1);
+
 
 public:
     // get and set position and velocity values from mouse positions

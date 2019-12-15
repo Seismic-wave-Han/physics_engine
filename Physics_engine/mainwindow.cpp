@@ -93,6 +93,7 @@ void MainWindow::on_applyButton_clicked()
     // set gravity
     double gravity = ui->gravityValue->value();
     engine.setGravity(gravity);
+
     // set friction(not developed yet)
     double friction = ui->frictionValue->value();
     engine.setFriction(friction);
@@ -121,43 +122,43 @@ void MainWindow::on_setButton_clicked()
     paramBox.size = {sizeX, sizeY};
     double positionX = ui->positionValueX->value();
     double positionY = ui->positionValueY->value();
-    QPointF position(positionX, positionY);
+    paramBox.position = {positionX, positionY};
     double velocityX = ui->velocityValueX->value();
     double velocityY = ui->velocityValueY->value();
-    QPointF velocity(velocityX, velocityY);
-    double restitution = ui->restitutionValue->value();
-//    bool isMovingY=true;
+    paramBox.velocity = {velocityX, velocityY};
+    paramBox.restitution = ui->restitutionValue->value();
 
     // send parameters to world
     world->setStaticParameters(paramBox);
 
     // initialize the mouse positions: for the case of clicking create button right after set button
-    world->pressPos = position + velocity;
-    world->releasePos = position;
+    world->pressPos = paramBox.position + paramBox.velocity;
+    world->releasePos = paramBox.position;
 }
 
 // creat: create an object with set values
 void MainWindow::on_createButton_clicked()
 {
+    // get position and velocity from mouse clicked information
     getDynamicParameters();
 
+    Parameter paramBox;
     // get values form ui
-    QString shape = ui->shapeComboBox->currentText();
-    double mass = ui->massValue->value();
+    paramBox.shape = ui->shapeComboBox->currentText();
+    paramBox.mass = ui->massValue->value();
     double sizeX = ui->sizeValueX->value();
     double sizeY = ui->sizeValueY->value();
-    QPointF size(sizeX, sizeY);
+    paramBox.size = {sizeX, sizeY};
     double positionX = ui->positionValueX->value();
     double positionY = ui->positionValueY->value();
-    QPointF position(positionX, positionY);
+    paramBox.position = {positionX, positionY};
     double velocityX = ui->velocityValueX->value();
     double velocityY = ui->velocityValueY->value();
-    QPointF velocity(velocityX, velocityY);
-    double restitution = ui->restitutionValue->value();
-    bool isMovingY=true;
+    paramBox.velocity = {velocityX, velocityY};
+    paramBox.restitution = ui->restitutionValue->value();
 
     // send parameters to world
-    world->setStaticParameters(shape, mass, size, restitution, isMovingY);
+    world->setStaticParameters(paramBox);
 
     // create an object based on sended parameters
     world->createObject();
@@ -186,49 +187,79 @@ void MainWindow::on_resetButton_clicked()
     world->rectangles.clear();
 }
 
+// is fixed :make the next object to be fixed
+void MainWindow::on_fixCheckBox_stateChanged(int arg1)
+{
+    if (arg1){
+        world->isFixed = true;
+    } else {
+        world->isFixed = false;
+    }
+}
+
 // ground check box: make/delete ground(fixed object) to bounce
 void MainWindow::on_groundCheckBox_stateChanged(int arg1)
 {
     double maxSize = world->screenSize;
     if (arg1){
         // ground is Rectangle which have infinite mass
-        Rectangle ground = Rectangle(&engine, true, 0, {maxSize-100, maxSize+20}, {0.0, maxSize});
+        // create object with appropriate values
+        Parameter paramBox;
+        paramBox.mass = 0;
+        paramBox.size = {maxSize, maxSize};
+        paramBox.position = {0, maxSize};
+        Rectangle ground = Rectangle(&engine, paramBox, true);
+
+        // insert ground to backgound container in world
         world->background.insert(std::make_pair("ground", ground));
     } else {
+        // delete ground from backgound container in world
         world->background.erase("ground");
     }
 }
 
-// right wall check box: create/delete right side wall
+// right wall check box: create/delete right side wall(same mechanism)
 void MainWindow::on_rightWallCheckBox_stateChanged(int arg1)
 {
     double maxSize = world->screenSize;
     if (arg1){
-        Rectangle rightWall = Rectangle(&engine, true, 0, {maxSize+20, maxSize-100}, {maxSize, 0.0});
+        Parameter paramBox;
+        paramBox.mass = 0;
+        paramBox.size = {maxSize, maxSize};
+        paramBox.position = {maxSize, 0};
+        Rectangle rightWall = Rectangle(&engine, paramBox, true);
         world->background.insert(std::make_pair("right wall", rightWall));
     } else {
         world->background.erase("right wall");
     }
 }
 
-// left wall check box
+// left wall check box(same mechanism)
 void MainWindow::on_leftWallCheckBox_stateChanged(int arg1)
 {
     double maxSize = world->screenSize;
     if (arg1){
-        Rectangle leftWall = Rectangle(&engine, true, 0, {maxSize+20, maxSize-100}, {-maxSize, 0.0});
+        Parameter paramBox;
+        paramBox.mass = 0;
+        paramBox.size = {maxSize, maxSize};
+        paramBox.position = {-maxSize, 0};
+        Rectangle leftWall = Rectangle(&engine, paramBox, true);
         world->background.insert(std::make_pair("left wall", leftWall));
     } else {
         world->background.erase("left wall");
     }
 }
 
-// roof check box
+// roof check box(same mechanism)
 void MainWindow::on_roofCheckBox_stateChanged(int arg1)
 {
     double maxSize = world->screenSize;
     if (arg1){
-        Rectangle roof = Rectangle(&engine, true, 0, {maxSize-100, maxSize+20}, {0.0, -maxSize});
+        Parameter paramBox;
+        paramBox.mass = 0;
+        paramBox.size = {maxSize, maxSize};
+        paramBox.position = {0, -maxSize};
+        Rectangle roof = Rectangle(&engine, paramBox, true);
         world->background.insert(std::make_pair("roof", roof));
     } else {
         world->background.erase("roof");
@@ -238,7 +269,8 @@ void MainWindow::on_roofCheckBox_stateChanged(int arg1)
 
 //![2] functions
 // getMousePositions: get and set position and velocity values from mouse positions
-void MainWindow::getDynamicParameters(){
+void MainWindow::getDynamicParameters()
+{
     ui->positionValueX->setValue(world->releasePos.x());
     ui->positionValueY->setValue(world->releasePos.y());
     QPointF velocity = world->pressPos - world->releasePos;

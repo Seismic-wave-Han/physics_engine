@@ -6,12 +6,14 @@
 #include <utility>
 #include <cmath>
 
-// Engine: very simple class to hold and apply the global variables
-class Engine{
+// Engine: simple class to hold and apply the global variables
+class Engine
+{
 public:
-    Engine(){}
-    Engine(Engine &engine):g(engine.g), mu(engine.mu){}
+    Engine(){} // default constructor
+    Engine(Engine &engine): g(engine.g), mu(engine.mu){} // custom constructor
 
+    // functions to set and get member variables
     void setGravity(double value){ g=value; }
     double getGravity() { return g; }
 
@@ -26,9 +28,6 @@ private:
     double g = 9.8;
 //    double g=0; // for setting non gravity motion as default
     double mu = 0;
-
-
-
-
 };
+
 #endif // ENGINE_H

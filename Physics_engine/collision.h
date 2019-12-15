@@ -187,42 +187,44 @@ bool rectangleVsCircle(Manifold *m){
     return true;
 }
 
-bool rectangleVsGround(Rectangle &rec){
-    qreal ground=250;
-    if(rec.Right_bottom().y() > ground) {
-        rec.position.setY( ground - 0.5*rec.height);
-        if (rec.velocity.ry() < 5) {
-            rec.stopY();
-            rec.velocity.setY(0);
-        }
-        return true;
+//bool rectangleVsGround(Rectangle &rec){
+//    qreal ground=250;
+//    if(rec.Right_bottom().y() > ground) {
+//        rec.position.setY( ground - 0.5*rec.height);
+//        if (rec.velocity.ry() < 5) {
+//            rec.stopY();
+//            rec.velocity.setY(0);
+//        }
+//        return true;
 
-    }
-    return false;
-}
+//    }
+//    return false;
+//}
 
-bool circleVsGround(Circle &cir){
-    qreal ground=250;
-    if((cir.position.y()+cir.radius) > ground) {
-        cir.position.setY( ground - cir.radius);
-        if(cir.velocity.ry() < 5){
-            cir.stopY();
-            cir.velocity.setY(0);
-        }
-        return true;
-    }
-    return false;
-}
+//bool circleVsGround(Circle &cir){
+//    qreal ground=250;
+//    if((cir.position.y()+cir.radius) > ground) {
+//        cir.position.setY( ground - cir.radius);
+//        if(cir.velocity.ry() < 5){
+//            cir.stopY();
+//            cir.velocity.setY(0);
+//        }
+//        return true;
+//    }
+//    return false;
+//}
 
 void positionCorrection(Manifold *m){
-    const double percent = 1; // usually 20% to 80%
+    const double percent = 1.01; // usually 20% to 80%
     const double  slop = 0.01; // usually 0.01 to 0.1
     Object *A=m->A;
     Object *B=m->B;
 
+    if (A->massInv + B->massInv != 0 ){
     QPointF correction = std::max(m->penetration - slop, 0.0 ) / (A->massInv + B->massInv) * percent * m->normal;
     A->position -= A->massInv * correction;
     B->position += B->massInv * correction;
+    }
 }
 
 void resolveCollision(Manifold *m){
@@ -242,14 +244,24 @@ void resolveCollision(Manifold *m){
     double e = std::min(std::min( A->restitution, B->restitution),0.98);
 
     // Calculate impulse scalar
-    double j = -(1 + e) * velocityDotNormal / (A->massInv + B->massInv);
+    if (A->massInv + B->massInv != 0 ){
+        double j = -(1 + e) * velocityDotNormal / (A->massInv + B->massInv);
+        double declineFactor = 8/(A->massInv + B->massInv);
+        if (A->massInv==0 | B->massInv ==0){
+            if (j>declineFactor){
+                declineFactor *= declineFactor;
+                j = std::sqrt(j*j - declineFactor);
+            } else {
+                j=0.5*j;
+            }
+        }
 
-    // Apply impulse
-    QPointF impulse = j * m->normal;
+        // Apply impulse
+        QPointF impulse = j * m->normal;
 
-
-    A->velocity -= A->massInv * impulse;
-    B->velocity += B->massInv * impulse;
+        A->velocity -= A->massInv * impulse;
+        B->velocity += B->massInv * impulse;
+    }
 }
 
 

@@ -4,19 +4,19 @@
 #include <QString>
 #include <QPoint>
 
-class Parameter
+// Parameter: simple struct to hold object parameters
+// added to simplify the code
+struct Parameter
 {
-public:
     Parameter();
 
-public:
+    // parameters of object(set default values for program safety)
     QString shape="Circle";
     double mass=10;
     QPointF size={10,10};
     QPointF position = {0, 0};
     QPointF velocity = {0, 0};
     double restitution = 1.0;
-    bool isMovingY = true;
 };
 
 #endif // PARAMETER_H

@@ -44,24 +44,25 @@ public:
     QLabel *gravityLabel;
     QWidget *gridLayoutWidget_2;
     QGridLayout *gridLayoutBottom;
-    QLabel *objectLabel;
-    QPushButton *setButton;
+    QPushButton *createButton;
     QLabel *massLabel;
     QLabel *restitutionLabel;
     QDoubleSpinBox *velocityValueY;
-    QLabel *shapeLabel;
-    QComboBox *shapeComboBox;
-    QDoubleSpinBox *massValue;
-    QLabel *velocityLabel;
-    QDoubleSpinBox *sizeValueY;
+    QDoubleSpinBox *positionValueY;
+    QDoubleSpinBox *sizeValueX;
     QDoubleSpinBox *velocityValueX;
+    QDoubleSpinBox *sizeValueY;
+    QDoubleSpinBox *massValue;
+    QLabel *shapeLabel;
+    QDoubleSpinBox *positionValueX;
     QLabel *sizeLabel;
     QDoubleSpinBox *restitutionValue;
-    QDoubleSpinBox *sizeValueX;
+    QLabel *objectLabel;
+    QLabel *velocityLabel;
+    QComboBox *shapeComboBox;
     QLabel *positionLabel;
-    QDoubleSpinBox *positionValueX;
-    QDoubleSpinBox *positionValueY;
-    QPushButton *createButton;
+    QPushButton *setButton;
+    QCheckBox *fixCheckBox;
     QPushButton *resetButton;
     QCheckBox *leftWallCheckBox;
     QCheckBox *rightWallCheckBox;
@@ -138,19 +139,14 @@ public:
 
         gridLayoutWidget_2 = new QWidget(centralwidget);
         gridLayoutWidget_2->setObjectName(QString::fromUtf8("gridLayoutWidget_2"));
-        gridLayoutWidget_2->setGeometry(QRect(620, 210, 321, 253));
+        gridLayoutWidget_2->setGeometry(QRect(620, 210, 321, 257));
         gridLayoutBottom = new QGridLayout(gridLayoutWidget_2);
         gridLayoutBottom->setObjectName(QString::fromUtf8("gridLayoutBottom"));
         gridLayoutBottom->setContentsMargins(0, 0, 0, 0);
-        objectLabel = new QLabel(gridLayoutWidget_2);
-        objectLabel->setObjectName(QString::fromUtf8("objectLabel"));
+        createButton = new QPushButton(gridLayoutWidget_2);
+        createButton->setObjectName(QString::fromUtf8("createButton"));
 
-        gridLayoutBottom->addWidget(objectLabel, 0, 0, 1, 1);
-
-        setButton = new QPushButton(gridLayoutWidget_2);
-        setButton->setObjectName(QString::fromUtf8("setButton"));
-
-        gridLayoutBottom->addWidget(setButton, 7, 0, 1, 1);
+        gridLayoutBottom->addWidget(createButton, 7, 1, 1, 1);
 
         massLabel = new QLabel(gridLayoutWidget_2);
         massLabel->setObjectName(QString::fromUtf8("massLabel"));
@@ -167,37 +163,40 @@ public:
 
         gridLayoutBottom->addWidget(velocityValueY, 5, 2, 1, 1);
 
-        shapeLabel = new QLabel(gridLayoutWidget_2);
-        shapeLabel->setObjectName(QString::fromUtf8("shapeLabel"));
+        positionValueY = new QDoubleSpinBox(gridLayoutWidget_2);
+        positionValueY->setObjectName(QString::fromUtf8("positionValueY"));
 
-        gridLayoutBottom->addWidget(shapeLabel, 1, 0, 1, 1);
+        gridLayoutBottom->addWidget(positionValueY, 4, 2, 1, 1);
 
-        shapeComboBox = new QComboBox(gridLayoutWidget_2);
-        shapeComboBox->addItem(QString());
-        shapeComboBox->addItem(QString());
-        shapeComboBox->setObjectName(QString::fromUtf8("shapeComboBox"));
+        sizeValueX = new QDoubleSpinBox(gridLayoutWidget_2);
+        sizeValueX->setObjectName(QString::fromUtf8("sizeValueX"));
 
-        gridLayoutBottom->addWidget(shapeComboBox, 1, 1, 1, 1);
+        gridLayoutBottom->addWidget(sizeValueX, 3, 1, 1, 1);
 
-        massValue = new QDoubleSpinBox(gridLayoutWidget_2);
-        massValue->setObjectName(QString::fromUtf8("massValue"));
+        velocityValueX = new QDoubleSpinBox(gridLayoutWidget_2);
+        velocityValueX->setObjectName(QString::fromUtf8("velocityValueX"));
 
-        gridLayoutBottom->addWidget(massValue, 2, 1, 1, 1);
-
-        velocityLabel = new QLabel(gridLayoutWidget_2);
-        velocityLabel->setObjectName(QString::fromUtf8("velocityLabel"));
-
-        gridLayoutBottom->addWidget(velocityLabel, 5, 0, 1, 1);
+        gridLayoutBottom->addWidget(velocityValueX, 5, 1, 1, 1);
 
         sizeValueY = new QDoubleSpinBox(gridLayoutWidget_2);
         sizeValueY->setObjectName(QString::fromUtf8("sizeValueY"));
 
         gridLayoutBottom->addWidget(sizeValueY, 3, 2, 1, 1);
 
-        velocityValueX = new QDoubleSpinBox(gridLayoutWidget_2);
-        velocityValueX->setObjectName(QString::fromUtf8("velocityValueX"));
+        massValue = new QDoubleSpinBox(gridLayoutWidget_2);
+        massValue->setObjectName(QString::fromUtf8("massValue"));
 
-        gridLayoutBottom->addWidget(velocityValueX, 5, 1, 1, 1);
+        gridLayoutBottom->addWidget(massValue, 2, 1, 1, 1);
+
+        shapeLabel = new QLabel(gridLayoutWidget_2);
+        shapeLabel->setObjectName(QString::fromUtf8("shapeLabel"));
+
+        gridLayoutBottom->addWidget(shapeLabel, 1, 0, 1, 1);
+
+        positionValueX = new QDoubleSpinBox(gridLayoutWidget_2);
+        positionValueX->setObjectName(QString::fromUtf8("positionValueX"));
+
+        gridLayoutBottom->addWidget(positionValueX, 4, 1, 1, 1);
 
         sizeLabel = new QLabel(gridLayoutWidget_2);
         sizeLabel->setObjectName(QString::fromUtf8("sizeLabel"));
@@ -209,30 +208,37 @@ public:
 
         gridLayoutBottom->addWidget(restitutionValue, 6, 1, 1, 1);
 
-        sizeValueX = new QDoubleSpinBox(gridLayoutWidget_2);
-        sizeValueX->setObjectName(QString::fromUtf8("sizeValueX"));
+        objectLabel = new QLabel(gridLayoutWidget_2);
+        objectLabel->setObjectName(QString::fromUtf8("objectLabel"));
 
-        gridLayoutBottom->addWidget(sizeValueX, 3, 1, 1, 1);
+        gridLayoutBottom->addWidget(objectLabel, 0, 0, 1, 1);
+
+        velocityLabel = new QLabel(gridLayoutWidget_2);
+        velocityLabel->setObjectName(QString::fromUtf8("velocityLabel"));
+
+        gridLayoutBottom->addWidget(velocityLabel, 5, 0, 1, 1);
+
+        shapeComboBox = new QComboBox(gridLayoutWidget_2);
+        shapeComboBox->addItem(QString());
+        shapeComboBox->addItem(QString());
+        shapeComboBox->setObjectName(QString::fromUtf8("shapeComboBox"));
+
+        gridLayoutBottom->addWidget(shapeComboBox, 1, 1, 1, 1);
 
         positionLabel = new QLabel(gridLayoutWidget_2);
         positionLabel->setObjectName(QString::fromUtf8("positionLabel"));
 
         gridLayoutBottom->addWidget(positionLabel, 4, 0, 1, 1);
 
-        positionValueX = new QDoubleSpinBox(gridLayoutWidget_2);
-        positionValueX->setObjectName(QString::fromUtf8("positionValueX"));
+        setButton = new QPushButton(gridLayoutWidget_2);
+        setButton->setObjectName(QString::fromUtf8("setButton"));
 
-        gridLayoutBottom->addWidget(positionValueX, 4, 1, 1, 1);
+        gridLayoutBottom->addWidget(setButton, 7, 0, 1, 1);
 
-        positionValueY = new QDoubleSpinBox(gridLayoutWidget_2);
-        positionValueY->setObjectName(QString::fromUtf8("positionValueY"));
+        fixCheckBox = new QCheckBox(gridLayoutWidget_2);
+        fixCheckBox->setObjectName(QString::fromUtf8("fixCheckBox"));
 
-        gridLayoutBottom->addWidget(positionValueY, 4, 2, 1, 1);
-
-        createButton = new QPushButton(gridLayoutWidget_2);
-        createButton->setObjectName(QString::fromUtf8("createButton"));
-
-        gridLayoutBottom->addWidget(createButton, 7, 1, 1, 1);
+        gridLayoutBottom->addWidget(fixCheckBox, 0, 2, 1, 1);
 
         resetButton = new QPushButton(centralwidget);
         resetButton->setObjectName(QString::fromUtf8("resetButton"));
@@ -279,18 +285,19 @@ public:
         applyButton->setText(QApplication::translate("MainWindow", "apply", nullptr));
         propertiesLabel->setText(QApplication::translate("MainWindow", "Properties", nullptr));
         gravityLabel->setText(QApplication::translate("MainWindow", "gravity", nullptr));
-        objectLabel->setText(QApplication::translate("MainWindow", "Object", nullptr));
-        setButton->setText(QApplication::translate("MainWindow", "set", nullptr));
+        createButton->setText(QApplication::translate("MainWindow", "create", nullptr));
         massLabel->setText(QApplication::translate("MainWindow", "mass", nullptr));
         restitutionLabel->setText(QApplication::translate("MainWindow", "restitution", nullptr));
         shapeLabel->setText(QApplication::translate("MainWindow", "shape", nullptr));
+        sizeLabel->setText(QApplication::translate("MainWindow", "size", nullptr));
+        objectLabel->setText(QApplication::translate("MainWindow", "Object", nullptr));
+        velocityLabel->setText(QApplication::translate("MainWindow", "velocity", nullptr));
         shapeComboBox->setItemText(0, QApplication::translate("MainWindow", "Circle", nullptr));
         shapeComboBox->setItemText(1, QApplication::translate("MainWindow", "Rectangle", nullptr));
 
-        velocityLabel->setText(QApplication::translate("MainWindow", "velocity", nullptr));
-        sizeLabel->setText(QApplication::translate("MainWindow", "size", nullptr));
         positionLabel->setText(QApplication::translate("MainWindow", "position", nullptr));
-        createButton->setText(QApplication::translate("MainWindow", "create", nullptr));
+        setButton->setText(QApplication::translate("MainWindow", "set", nullptr));
+        fixCheckBox->setText(QApplication::translate("MainWindow", "fixed", nullptr));
         resetButton->setText(QApplication::translate("MainWindow", "reset", nullptr));
         leftWallCheckBox->setText(QString());
         rightWallCheckBox->setText(QString());
